@@ -5,118 +5,144 @@ import axios from 'axios';
 import useAuth from '../Hooks/useAuth';
 import useAxiosSecure from '../Hooks/useAxiosSeceure';
 import SocialLogin from './SocialLogin';
+import { useTheme } from '../Theme/ThemeContext';
+import Swal from 'sweetalert2';
 
 const Register = () => {
-
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { registerUser, updateUserProfile } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
-    // console.log('in register', location);
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
 
     const handleRegistration = (data) => {
-        // console.log('after register', data.photo[0]);
-
-        const profileImg = data.photo[0]
-
+        const profileImg = data.photo[0];
         registerUser(data.email, data.password)
             .then(() => {
-                // console.log(result.user);
-                // store img in url
                 const formData = new FormData();
-                formData.append('image', profileImg)
-                const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key} `
+                formData.append('image', profileImg);
+                const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`;
 
                 axios.post(image_API_URL, formData)
                     .then(res => {
                         const photoURL = res.data.data.url;
-
-                        // create user in the database
                         const userInfo = {
                             email: data.email,
                             displayName: data.name,
-                            photoURL: photoURL
+                            photoURL,
+                            role: data.role
+                        };
 
-                        }
                         axiosSecure.post('/users', userInfo)
                             .then(res => {
                                 if (res.data.insertedId) {
-                                    console.log('user created in the database');
+                                    console.log('User created in database');
                                 }
-                            })
+                            });
 
-
-                        // update user profile
-
-                        const userProfile = {
-                            displayName: data.name,
-                            photoURL: photoURL,
-                        }
+                        const userProfile = { displayName: data.name, photoURL };
                         updateUserProfile(userProfile)
                             .then(() => {
-                                // console.log('user Profile Updated done');
-                                navigate(location.state || '/')
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Registration Successful',
+                                    text: 'Welcome to Zap Shift!',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                navigate(location.state || '/');
                             })
-                            .catch(error => {
-                                console.log(error);
-                            })
-
-                    })
-
-
+                            .catch(error => console.log(error));
+                    });
             })
             .catch(error => {
-                console.log(error);
-            })
-    }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Registration Failed',
+                    text: error.message,
+                });
+            });
+    };
+
+    // Theme classes
+    const bgColor = isDark ? 'bg-gray-900' : 'bg-green-100';
+    const cardBg = isDark ? 'bg-gray-800' : 'bg-white';
+    const textColor = isDark ? 'text-gray-100' : 'text-gray-900';
+    const inputBg = isDark ? 'bg-gray-700 text-gray-100' : 'bg-white text-gray-900';
+    const btnColor = isDark ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white';
+    const linkColor = isDark ? 'text-emerald-300' : 'text-emerald-800';
 
     return (
-        <div className="card bg-base-100 mx-auto w-full max-w-sm shrink-0 shadow-2xl">
-            <h3 className="text-3xl text-center">Welcome to Zap Shift</h3>
-            <p className=" text-center">Please register</p>
-            <form className="card-body" onSubmit={handleSubmit(handleRegistration)}>
-                <fieldset className="fieldset">
+        <div className={`${bgColor} min-h-screen flex items-center justify-center py-10 transition-colors duration-500`}>
+            <div className={`card w-full max-w-md shadow-2xl rounded-2xl ${cardBg} p-6`}>
+                <h3 className={`text-3xl font-bold text-center mb-1 ${linkColor}`}>Welcome to Zap Shift</h3>
+                <p className={`text-center mb-6 ${textColor}`}>Create your account to get started</p>
 
-                    {/* image */}
-                    <label className="label">Photo</label>
-                    <input type="file"{...register('photo', { required: true })} className="file-input" placeholder="your photo" />
+                <form onSubmit={handleSubmit(handleRegistration)} className="space-y-4">
+                    {/* Photo */}
+                    <div>
+                        <label className={`label ${textColor}`}>Profile Photo</label>
+                        <input type="file" {...register('photo', { required: true })} className="file-input w-full" />
+                        {errors.photo && <p className='text-red-500'>Photo is required</p>}
+                    </div>
 
-                    {errors.name?.type === 'required' && <p className='text-red-500'>Photo is required</p>}
+                    {/* Name */}
+                    <div>
+                        <label className={`label ${textColor}`}>Name</label>
+                        <input type="text" {...register('name', { required: true })} className={`input w-full ${inputBg}`} placeholder="Your Name" />
+                        {errors.name && <p className='text-red-500'>Name is required</p>}
+                    </div>
 
+                    {/* Email */}
+                    <div>
+                        <label className={`label ${textColor}`}>Email</label>
+                        <input type="email" {...register('email', { required: true })} className={`input w-full ${inputBg}`} placeholder="Your Email" />
+                        {errors.email && <p className='text-red-500'>Email is required</p>}
+                    </div>
 
-                    {/* name */}
-                    <label className="label">Name</label>
-                    <input type="text"{...register('name', { required: true })} className="input" placeholder="your name" />
+                    {/* Role */}
+                    <div>
+                        <label className={`label ${textColor}`}>Role</label>
+                        <select {...register('role', { required: true })} className={`select w-full ${inputBg}`}>
+                            <option value="">Select Role</option>
+                            <option value="borrower">Borrower</option>
+                            <option value="manager">Manager</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        {errors.role && <p className="text-red-500">Role is required</p>}
+                    </div>
 
-                    {errors.name?.type === 'required' && <p className='text-red-500'>Name is required</p>}
+                    {/* Password */}
+                    <div>
+                        <label className={`label ${textColor}`}>Password</label>
+                        <input
+                            type="password"
+                            {...register('password', {
+                                required: true,
+                                minLength: 6,
+                                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/
+                            })}
+                            className={`input w-full ${inputBg}`}
+                            placeholder="Password"
+                        />
+                        {errors.password?.type === 'required' && <p className='text-red-500'>Password is required</p>}
+                        {errors.password?.type === 'minLength' && <p className='text-red-500'>Password must be at least 6 characters</p>}
+                        {errors.password?.type === 'pattern' && <p className='text-red-500'>Password must include uppercase, lowercase, number, and special character</p>}
+                    </div>
 
-                    {/* email */}
-                    <label className="label">Email</label>
-                    <input type="email"{...register('email', { required: true })} className="input" placeholder="Email" />
+                    <button type="submit" className={`w-full py-3 rounded-md font-semibold ${btnColor} mt-2`}>Register</button>
+                </form>
 
-                    {errors.email?.type === 'required' && <p className='text-red-500'>Email is required</p>}
+                <p className={`text-center mt-4 ${textColor}`}>
+                    Already have an account? <Link state={location.state} className={`underline ${linkColor}`} to="/login">Login</Link>
+                </p>
 
-                    {/* pass */}
-                    <label className="label">Password</label>
-                    <input type="password" {...register('password', {
-                        required: true, minLength: 6, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/
-                    })} className="input" placeholder="Password" />
-                    {
-                        errors.password?.type === 'required' && <p className='text-red-500'>Password is required.</p>
-                    }
-                    {
-                        errors.password?.type === 'minLength' && <p className='text-red-500'>password must be 6 character or longer</p>
-                    }
-                    {
-                        errors.password?.type === 'pattern' && <p className='text-red-500'>password must have at least one uppercase,one lowercase,number and special character</p>
-                    }
-                    <div><a className="link link-hover">Forgot password?</a></div>
-                    <button className="btn btn-neutral mt-4">Register</button>
-                </fieldset>
-                <p>Already Have an account <Link state={location.state} className='text-blue-400 underline' to="/login">Login</Link></p>
-            </form>
-            <SocialLogin></SocialLogin>
+                <div className="mt-6">
+                    <SocialLogin />
+                </div>
+            </div>
         </div>
     );
 };
