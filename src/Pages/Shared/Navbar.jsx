@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router';
 import logoImg from '../../assets/loanlogo-removebg-preview.png';
+import { useTheme } from '../../Theme/ThemeContext';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState(null);
-    const [theme, setTheme] = useState(
-        typeof window !== 'undefined' ? localStorage.getItem('theme') || 'light' : 'light'
-    );
+    const { theme, toggleTheme } = useTheme();
+    const isDark = theme === "dark";
 
     useEffect(() => {
         try {
@@ -19,11 +19,6 @@ const Navbar = () => {
         }
     }, []);
 
-    useEffect(() => {
-        document.documentElement.classList.toggle('dark', theme === 'dark');
-        localStorage.setItem('theme', theme);
-    }, [theme]);
-
     const handleLogout = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
@@ -31,29 +26,48 @@ const Navbar = () => {
         navigate('/');
     };
 
+    // Avatar setup
     const avatar = user?.photoURL ? (
         <img src={user.photoURL} alt="User avatar" className="h-8 w-8 rounded-full object-cover" />
     ) : (
-        <div className="h-8 w-8 rounded-full bg-emerald-700 flex items-center justify-center text-xs font-medium text-white">
+        <div
+            className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-medium text-white ${isDark ? 'bg-emerald-800' : 'bg-emerald-600'
+                }`}
+        >
             {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
         </div>
     );
 
+    // Nav link class (clear light/dark contrast)
     const navClass = ({ isActive }) =>
-        `px-3 py-2 rounded-md text-sm font-medium text-white ${isActive ? 'bg-white/10' : 'hover:bg-white/5'}`;
+        `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${isDark
+            ? `text-gray-200 hover:bg-emerald-900/50 ${isActive ? 'bg-emerald-800 text-white' : ''
+            }`
+            : `text-white hover:bg-emerald-700/40 ${isActive ? 'bg-emerald-700 text-white' : ''
+            }`
+        }`;
 
-    // button styles for auth actions
-    const loginBtnClass =
-        'px-3 py-2 rounded-md text-sm font-medium border border-white/25 text-white hover:bg-white/5';
-    const registerBtnClass =
-        'px-3 py-2 rounded-md text-sm font-semibold bg-lime-300 text-slate-800 hover:bg-lime-400';
+    // const loginBtnClass =
+    //     isDark
+    //         ? 'px-3 py-2 rounded-md text-sm font-medium border border-gray-500 text-gray-200 hover:bg-gray-800 transition-colors'
+    //         : 'px-3 py-2 rounded-md text-sm font-medium border border-white/30 text-white hover:bg-emerald-700/40 transition-colors';
+
+    // const registerBtnClass =
+    //     isDark
+    //         ? 'px-3 py-2 rounded-md text-sm font-semibold bg-emerald-400 text-slate-900 hover:bg-emerald-300 transition-colors'
+    //         : 'px-3 py-2 rounded-md text-sm font-semibold bg-lime-300 text-slate-800 hover:bg-lime-400 transition-colors';
 
     return (
         <>
-            <header className="bg-gradient-to-r from-emerald-700 via-green-600 to-lime-400 text-white sticky top-0 z-40 backdrop-blur">
+            <header
+                className={`sticky top-0 z-40 backdrop-blur transition-colors duration-300 text-white ${isDark
+                    ? 'bg-gradient-to-r from-gray-950 via-gray-900 to-emerald-950'
+                    : 'bg-gradient-to-r from-emerald-700 via-green-600 to-lime-400'
+                    }`}
+            >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center h-16 gap-4">
-                        {/* LEFT: Logo */}
+                        {/* Logo */}
                         <div className="flex items-center">
                             <NavLink to="/" className="flex items-center gap-3">
                                 <img src={logoImg} alt="LoanLink" className="h-10 w-auto" />
@@ -61,40 +75,37 @@ const Navbar = () => {
                             </NavLink>
                         </div>
 
-                        {/* CENTER: main links (centered on desktop) */}
+                        {/* Main Links */}
                         <nav className="hidden md:flex flex-1 justify-center items-center gap-1">
                             <NavLink to="/" className={navClass}>Home</NavLink>
                             <NavLink to="/all-loans" className={navClass}>All-Loans</NavLink>
-
-                            {!user && (
+                            {!user ? (
                                 <>
                                     <NavLink to="/about" className={navClass}>About Us</NavLink>
                                     <NavLink to="/contact" className={navClass}>Contact</NavLink>
                                 </>
+                            ) : (
+                                <NavLink to="/dashboard" className={navClass}>Dashboard</NavLink>
                             )}
-
-                            {user && <NavLink to="/dashboard" className={navClass}>Dashboard</NavLink>}
                         </nav>
 
-                        {/* RIGHT: Auth controls + theme toggle */}
+                        {/* Right side */}
                         <div className="ml-auto flex items-center gap-2">
-                            {/* Desktop auth buttons grouped to the end */}
                             <div className="hidden md:flex items-center gap-2">
                                 {!user ? (
                                     <>
-                                        <NavLink to="/login" className={loginBtnClass}>Login</NavLink>
-                                        <NavLink to="/register" className={registerBtnClass}>Register</NavLink>
+                                        <NavLink to="/login" className='btn-primary'>Login</NavLink>
+                                        <NavLink to="/register" className='btn-secondary'>Register</NavLink>
                                     </>
                                 ) : (
                                     <>
                                         <button
                                             onClick={handleLogout}
-                                            className="px-3 py-2 rounded-md text-sm font-medium hover:bg-white/5 text-white"
+                                            className="px-3 py-2 rounded-md text-sm font-medium hover:bg-emerald-800/40 transition-colors"
                                             type="button"
                                         >
                                             Logout
                                         </button>
-
                                         <button
                                             title={user.name || 'Profile'}
                                             onClick={() => navigate('/profile')}
@@ -106,30 +117,32 @@ const Navbar = () => {
                                     </>
                                 )}
 
+                                {/* Theme toggle */}
                                 <button
-                                    onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
-                                    className="ml-2 px-2 py-2 rounded-md hover:bg-white/5 text-white"
+                                    onClick={toggleTheme}
+                                    className="ml-2 px-2 py-2 rounded-md hover:bg-emerald-800/40 transition-colors"
                                     aria-label="Toggle theme"
                                     type="button"
+                                    title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                                 >
-                                    {theme === 'dark' ? '🌙' : '☀️'}
+                                    {theme === 'dark' ? '☀️' : '🌙'}
                                 </button>
                             </div>
 
-                            {/* Mobile controls: theme + menu button */}
+                            {/* Mobile menu */}
                             <div className="md:hidden flex items-center">
                                 <button
-                                    onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
-                                    className="mr-2 px-2 py-2 rounded-md hover:bg-white/5 text-white"
+                                    onClick={toggleTheme}
+                                    className="mr-2 px-2 py-2 rounded-md hover:bg-emerald-800/40 transition-colors"
                                     aria-label="Toggle theme"
                                     type="button"
                                 >
-                                    {theme === 'dark' ? '🌙' : '☀️'}
+                                    {theme === 'dark' ? '☀️' : '🌙'}
                                 </button>
 
                                 <button
                                     onClick={() => setOpen((o) => !o)}
-                                    className="p-2 rounded-md hover:bg-white/5 text-white"
+                                    className="p-2 rounded-md hover:bg-emerald-800/40 transition-colors"
                                     aria-expanded={open}
                                     aria-label="Toggle menu"
                                     type="button"
@@ -141,9 +154,12 @@ const Navbar = () => {
                     </div>
                 </div>
 
-                {/* Mobile menu: keep logical order, place login/register at the end */}
+                {/* Mobile dropdown */}
                 {open && (
-                    <nav className="md:hidden bg-white/5 px-4 pb-4">
+                    <nav
+                        className={`md:hidden px-4 pb-4 transition-colors ${isDark ? 'bg-gray-900/95' : 'bg-emerald-700/20'
+                            }`}
+                    >
                         <div className="flex flex-col gap-1">
                             <NavLink to="/" className={navClass} onClick={() => setOpen(false)}>Home</NavLink>
                             <NavLink to="/all-loans" className={navClass} onClick={() => setOpen(false)}>All-Loans</NavLink>
@@ -160,8 +176,8 @@ const Navbar = () => {
                             <div className="mt-2 border-t border-white/10 pt-2 flex flex-col gap-2">
                                 {!user ? (
                                     <>
-                                        <NavLink to="/login" className={loginBtnClass} onClick={() => setOpen(false)}>Login</NavLink>
-                                        <NavLink to="/register" className={registerBtnClass} onClick={() => setOpen(false)}>Register</NavLink>
+                                        <NavLink to="/login" className='btn-primary' onClick={() => setOpen(false)}>Login</NavLink>
+                                        <NavLink to="/register" className='btn-secondary' onClick={() => setOpen(false)}>Register</NavLink>
                                     </>
                                 ) : (
                                     <>
@@ -170,7 +186,7 @@ const Navbar = () => {
                                                 handleLogout();
                                                 setOpen(false);
                                             }}
-                                            className="text-left px-3 py-2 rounded-md hover:bg-white/5 text-white"
+                                            className="text-left px-3 py-2 rounded-md hover:bg-emerald-800/40 transition-colors"
                                             type="button"
                                         >
                                             Logout
@@ -181,7 +197,7 @@ const Navbar = () => {
                                                 navigate('/profile');
                                                 setOpen(false);
                                             }}
-                                            className="text-left px-3 py-2 rounded-md hover:bg-white/5 flex items-center gap-2 text-white"
+                                            className="text-left px-3 py-2 rounded-md hover:bg-emerald-800/40 flex items-center gap-2 transition-colors"
                                             type="button"
                                         >
                                             {avatar}
@@ -194,8 +210,6 @@ const Navbar = () => {
                     </nav>
                 )}
             </header>
-
-
         </>
     );
 };
