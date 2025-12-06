@@ -14,12 +14,6 @@ const Hero = () => {
     const cardInnerBg = isDark ? 'bg-gray-700' : 'bg-green-600';
     const cardText = isDark ? 'text-gray-200' : 'text-green-300';
     const sectionBg = isDark ? 'bg-gray-900' : 'bg-transparent';
-    // const btnPrimary = isDark
-    //     ? 'bg-lime-400 text-gray-900 hover:bg-lime-500'
-    //     : 'bg-emerald-600 text-white hover:bg-emerald-700';
-    // const btnSecondary = isDark
-    //     ? 'bg-gray-700 text-gray-200 hover:bg-gray-600'
-    //     : 'bg-green-200 text-green-900 hover:bg-green-300';
 
     return (
         <section className={`w-11/12 mx-auto py-10 sm:py-15 overflow-hidden ${sectionBg} transition-colors duration-500`}>

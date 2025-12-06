@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../Layouts/RootLayout";
 import Home from "../Pages/Home";
+import AllLoans from "../Pages/AllLoans.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -11,6 +12,10 @@ export const router = createBrowserRouter([
                 {
                     index: true,
                     Component: Home,
+                },
+                {
+                    path: "/all-loans",
+                    Component: AllLoans
                 }
             ]
     },
