@@ -79,7 +79,7 @@ const AllLoans = () => {
                                 <p className="text-sm mb-1">Interest: {loan.interest_rate}%</p>
                                 <p className="font-semibold mb-2">Max Loan: ${loan.max_loan_limit.toLocaleString()}</p>
                                 <button
-                                    className={`px-3 py-2 rounded-md btn-p  w-full font-semibold`}
+                                    className={`px-3 py-2 rounded-md btn-primary w-full font-semibold`}
                                 >
                                     View Details
                                 </button>
