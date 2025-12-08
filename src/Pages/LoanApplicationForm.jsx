@@ -28,6 +28,11 @@ const LoanApplicationForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = async (data) => {
+        if (!user || !loan) {
+            alert('User or loan details are missing. Cannot submit application.');
+            return;
+        }
+
         try {
             const payload = {
                 ...data,
@@ -38,22 +43,32 @@ const LoanApplicationForm = () => {
                 applicationFeeStatus: 'Unpaid'
             };
             await axios.post('/loan-applications', payload);
-            alert('Application submitted successfully!');
+            alert('Application submitted successfully! Redirecting to My Applications.');
             navigate('/my-applications');
         } catch (error) {
             console.error(error);
-            alert('Error submitting application.');
+            alert('Error submitting application. Please check your console for details.');
         }
     };
 
     if (isLoading) return <p className="text-center py-20 text-xl">Loading loan details...</p>;
     if (isError || !loan) return <p className="text-center py-20 text-xl">Error fetching loan details.</p>;
 
+    // --- Styling for Dark Mode ---
     const bgColor = isDark ? 'bg-gray-900' : 'bg-gray-50';
     const cardBg = isDark ? 'bg-gray-800' : 'bg-white';
     const textColor = isDark ? 'text-gray-100' : 'text-gray-900';
     const labelColor = isDark ? 'text-gray-300' : 'text-gray-700';
     const headingColor = isDark ? 'text-emerald-300' : 'text-emerald-800';
+
+    // FIX APPLIED HERE: Added explicit text-gray-900 (light mode) and dark:text-gray-100 (dark mode)
+    // for standard input fields where the user types.
+    const inputClasses = "w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100";
+
+    // FIX APPLIED HERE: Ensured read-only field text is light for dark mode, which was already present,
+    // but made it explicit that the *default* color is for light mode, and dark:text-gray-100 is for dark mode.
+    // I've also changed the light mode text color for better contrast in light mode.
+    const readOnlyClasses = "w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100";
 
 
     return (
@@ -67,14 +82,15 @@ const LoanApplicationForm = () => {
                 <h2 className={`${headingColor} text-4xl font-black mb-6 text-center`}>Loan Application Form</h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+
                     {/* Auto-filled Read-only Fields */}
                     <div>
                         <label className={`block mb-1 font-semibold ${labelColor}`}>User Email</label>
                         <input
                             type="email"
-                            value={user.email}
+                            value={user.email || ''} // Safety check for user.email
                             readOnly
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+                            className={readOnlyClasses}
                         />
                     </div>
                     <div>
@@ -83,7 +99,7 @@ const LoanApplicationForm = () => {
                             type="text"
                             value={loan.title}
                             readOnly
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+                            className={readOnlyClasses}
                         />
                     </div>
                     <div>
@@ -92,7 +108,7 @@ const LoanApplicationForm = () => {
                             type="text"
                             value={loan.interest_rate}
                             readOnly
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+                            className={readOnlyClasses}
                         />
                     </div>
 
@@ -102,7 +118,7 @@ const LoanApplicationForm = () => {
                             <label className={`block mb-1 font-semibold ${labelColor}`}>First Name</label>
                             <input
                                 {...register('firstName', { required: true })}
-                                className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                                className={inputClasses}
                                 placeholder="First Name"
                             />
                             {errors.firstName && <span className="text-red-500 text-sm">First name is required</span>}
@@ -111,7 +127,7 @@ const LoanApplicationForm = () => {
                             <label className={`block mb-1 font-semibold ${labelColor}`}>Last Name</label>
                             <input
                                 {...register('lastName', { required: true })}
-                                className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                                className={inputClasses}
                                 placeholder="Last Name"
                             />
                             {errors.lastName && <span className="text-red-500 text-sm">Last name is required</span>}
@@ -122,7 +138,7 @@ const LoanApplicationForm = () => {
                         <label className={`block mb-1 font-semibold ${labelColor}`}>Contact Number</label>
                         <input
                             {...register('contactNumber', { required: true })}
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                            className={inputClasses}
                             placeholder="Contact Number"
                         />
                         {errors.contactNumber && <span className="text-red-500 text-sm">Contact number is required</span>}
@@ -132,7 +148,7 @@ const LoanApplicationForm = () => {
                         <label className={`block mb-1 font-semibold ${labelColor}`}>National ID / Passport Number</label>
                         <input
                             {...register('nidPassport', { required: true })}
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                            className={inputClasses}
                             placeholder="NID / Passport"
                         />
                         {errors.nidPassport && <span className="text-red-500 text-sm">This field is required</span>}
@@ -142,7 +158,7 @@ const LoanApplicationForm = () => {
                         <label className={`block mb-1 font-semibold ${labelColor}`}>Income Source</label>
                         <input
                             {...register('incomeSource', { required: true })}
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                            className={inputClasses}
                             placeholder="Income Source"
                         />
                         {errors.incomeSource && <span className="text-red-500 text-sm">This field is required</span>}
@@ -153,7 +169,7 @@ const LoanApplicationForm = () => {
                         <input
                             type="number"
                             {...register('monthlyIncome', { required: true, min: 0 })}
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                            className={inputClasses}
                             placeholder="Monthly Income"
                         />
                         {errors.monthlyIncome && <span className="text-red-500 text-sm">Enter valid monthly income</span>}
@@ -164,7 +180,7 @@ const LoanApplicationForm = () => {
                         <input
                             type="number"
                             {...register('loanAmount', { required: true, min: 1 })}
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                            className={inputClasses}
                             placeholder="Loan Amount"
                         />
                         {errors.loanAmount && <span className="text-red-500 text-sm">Enter valid loan amount</span>}
@@ -174,7 +190,7 @@ const LoanApplicationForm = () => {
                         <label className={`block mb-1 font-semibold ${labelColor}`}>Reason for Loan</label>
                         <textarea
                             {...register('loanReason', { required: true })}
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                            className={inputClasses}
                             placeholder="Reason for Loan"
                             rows={3}
                         />
@@ -185,7 +201,7 @@ const LoanApplicationForm = () => {
                         <label className={`block mb-1 font-semibold ${labelColor}`}>Address</label>
                         <textarea
                             {...register('address', { required: true })}
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                            className={inputClasses}
                             placeholder="Address"
                             rows={2}
                         />
@@ -196,7 +212,7 @@ const LoanApplicationForm = () => {
                         <label className={`block mb-1 font-semibold ${labelColor}`}>Extra Notes</label>
                         <textarea
                             {...register('extraNotes')}
-                            className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                            className={inputClasses}
                             placeholder="Extra Notes (optional)"
                             rows={2}
                         />
