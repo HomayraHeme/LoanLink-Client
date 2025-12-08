@@ -43,8 +43,8 @@ const LoanApplicationForm = () => {
                 applicationFeeStatus: 'Unpaid'
             };
             await axios.post('/loan-applications', payload);
-            alert('Application submitted successfully! Redirecting to My Applications.');
-            navigate('/my-applications');
+            alert('Application submitted successfully! Redirecting to My Loans.');
+            navigate('/dashboard/my-loans');
         } catch (error) {
             console.error(error);
             alert('Error submitting application. Please check your console for details.');
