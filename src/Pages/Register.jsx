@@ -18,6 +18,7 @@ const Register = () => {
     const isDark = theme === 'dark';
 
     const handleRegistration = (data) => {
+        console.log(data);
         const profileImg = data.photo[0];
         registerUser(data.email, data.password)
             .then(() => {

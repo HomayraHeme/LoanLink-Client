@@ -1,31 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router';
 import logoImg from '../../assets/loanlogo-removebg-preview.png';
 import { useTheme } from '../../Theme/ThemeContext';
+import useAuth from '../../Hooks/useAuth';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
-    const [user, setUser] = useState(null);
     const { theme, toggleTheme } = useTheme();
     const isDark = theme === "dark";
 
-    useEffect(() => {
-        try {
-            const raw = localStorage.getItem('user');
-            setUser(raw ? JSON.parse(raw) : null);
-        } catch {
-            setUser(null);
-        }
-    }, []);
+    const { user, logOut } = useAuth();
 
-    const handleLogout = () => {
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        setUser(null);
-        navigate('/');
-    };
-
+    const handleLogOut = () => {
+        logOut()
+            .then()
+            .catch(error => {
+                console.log(error);
+            })
+    }
     // Avatar setup
     const avatar = user?.photoURL ? (
         <img src={user.photoURL} alt="User avatar" className="h-8 w-8 rounded-full object-cover" />
@@ -47,15 +40,6 @@ const Navbar = () => {
             }`
         }`;
 
-    // const loginBtnClass =
-    //     isDark
-    //         ? 'px-3 py-2 rounded-md text-sm font-medium border border-gray-500 text-gray-200 hover:bg-gray-800 transition-colors'
-    //         : 'px-3 py-2 rounded-md text-sm font-medium border border-white/30 text-white hover:bg-emerald-700/40 transition-colors';
-
-    // const registerBtnClass =
-    //     isDark
-    //         ? 'px-3 py-2 rounded-md text-sm font-semibold bg-emerald-400 text-slate-900 hover:bg-emerald-300 transition-colors'
-    //         : 'px-3 py-2 rounded-md text-sm font-semibold bg-lime-300 text-slate-800 hover:bg-lime-400 transition-colors';
 
     return (
         <>
@@ -79,14 +63,14 @@ const Navbar = () => {
                         <nav className="hidden md:flex flex-1 justify-center items-center gap-1">
                             <NavLink to="/" className={navClass}>Home</NavLink>
                             <NavLink to="/all-loans" className={navClass}>All-Loans</NavLink>
-                            {!user ? (
-                                <>
-                                    <NavLink to="/about" className={navClass}>About Us</NavLink>
-                                    <NavLink to="/contact" className={navClass}>Contact</NavLink>
-                                </>
-                            ) : (
+
+                            <NavLink to="/about" className={navClass}>About Us</NavLink>
+                            <NavLink to="/contact" className={navClass}>Contact</NavLink>
+                            {user && <>
                                 <NavLink to="/dashboard" className={navClass}>Dashboard</NavLink>
-                            )}
+                            </>
+
+                            }
                         </nav>
 
                         {/* Right side */}
@@ -100,8 +84,8 @@ const Navbar = () => {
                                 ) : (
                                     <>
                                         <button
-                                            onClick={handleLogout}
-                                            className="px-3 py-2 rounded-md text-sm font-medium hover:bg-emerald-800/40 transition-colors"
+                                            onClick={handleLogOut}
+                                            className=" btn-primary"
                                             type="button"
                                         >
                                             Logout
@@ -164,14 +148,16 @@ const Navbar = () => {
                             <NavLink to="/" className={navClass} onClick={() => setOpen(false)}>Home</NavLink>
                             <NavLink to="/all-loans" className={navClass} onClick={() => setOpen(false)}>All-Loans</NavLink>
 
-                            {!user ? (
-                                <>
-                                    <NavLink to="/about" className={navClass} onClick={() => setOpen(false)}>About Us</NavLink>
-                                    <NavLink to="/contact" className={navClass} onClick={() => setOpen(false)}>Contact</NavLink>
-                                </>
-                            ) : (
+
+                            <NavLink to="/about" className={navClass} onClick={() => setOpen(false)}>About Us</NavLink>
+                            <NavLink to="/contact" className={navClass} onClick={() => setOpen(false)}>Contact</NavLink>
+
+                            {user && <>
                                 <NavLink to="/dashboard" className={navClass} onClick={() => setOpen(false)}>Dashboard</NavLink>
-                            )}
+                            </>
+                            }
+
+
 
                             <div className="mt-2 border-t border-white/10 pt-2 flex flex-col gap-2">
                                 {!user ? (
@@ -183,10 +169,10 @@ const Navbar = () => {
                                     <>
                                         <button
                                             onClick={() => {
-                                                handleLogout();
+                                                handleLogOut();
                                                 setOpen(false);
                                             }}
-                                            className="text-left px-3 py-2 rounded-md hover:bg-emerald-800/40 transition-colors"
+                                            className="btn btn-primary"
                                             type="button"
                                         >
                                             Logout
@@ -209,7 +195,7 @@ const Navbar = () => {
                         </div>
                     </nav>
                 )}
-            </header>
+            </header >
         </>
     );
 };

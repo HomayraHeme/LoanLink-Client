@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../Hooks/useAxios';
 import { useTheme } from '../Theme/ThemeContext';
+import { Link } from 'react-router';
 
 const AllLoans = () => {
     const { theme } = useTheme();
@@ -78,11 +79,13 @@ const AllLoans = () => {
                                 <p className="text-sm mb-1">Category: {loan.loan_category}</p>
                                 <p className="text-sm mb-1">Interest: {loan.interest_rate}%</p>
                                 <p className="font-semibold mb-2">Max Loan: ${loan.max_loan_limit.toLocaleString()}</p>
-                                <button
-                                    className={`px-3 py-2 rounded-md btn-primary w-full font-semibold`}
-                                >
-                                    View Details
-                                </button>
+                                <Link to={`/view-details/${loan._id}`}>
+                                    <button
+                                        className={`px-3 py-2 rounded-md btn-primary w-full font-semibold`}
+                                    >
+                                        View Details
+                                    </button>
+                                </Link>
                             </div>
                         ))
                     )}

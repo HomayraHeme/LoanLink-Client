@@ -6,6 +6,8 @@ import AboutUs from "../Pages/AboutUs.jsx";
 import ContactUs from "../Pages/ContactUs.jsx";
 import Login from "../Pages/Login.jsx";
 import Register from "../Pages/Register.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
+import ViewDetails from "../Pages/ViewDetails.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -36,6 +38,14 @@ export const router = createBrowserRouter([
                 {
                     path: '/register',
                     Component: Register
+                },
+                {
+                    path: '/view-details/:id',
+                    element:
+                        <PrivateRoute>
+                            <ViewDetails></ViewDetails>
+                        </PrivateRoute>
+
                 }
             ]
     },
