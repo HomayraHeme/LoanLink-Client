@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, Link } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../Hooks/useAxios';
 import { useTheme } from '../Theme/ThemeContext';
@@ -102,14 +102,11 @@ const ViewDetails = () => {
                         <motion.button
                             whileHover={{ scale: canApply ? 1.05 : 1 }}
                             whileTap={{ scale: canApply ? 0.95 : 1 }}
-                            className={`mt-10 w-full py-3 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg ${canApply
-                                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                                    : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                                }`}
+                            className='btn-primary'
                             disabled={!canApply}
                             onClick={() => canApply && navigate(`/apply-loan/${loan._id}`)}
                         >
-                            Apply Now
+                            <Link to={`/apply-loan/${loan._id}`}> Apply Now</Link>
                         </motion.button>
                     </div>
                 </div>

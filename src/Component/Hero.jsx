@@ -1,6 +1,7 @@
 import React from 'react';
 import ImageSlide from './imageSlide';
 import { useTheme } from '../Theme/ThemeContext';
+import { Link } from 'react-router';
 
 const Hero = () => {
     const { theme } = useTheme();
@@ -31,7 +32,7 @@ const Hero = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
-                            <a href="#" className='btn-primary '>
+                            <a href='#' className='btn-primary '>
                                 Apply for loan
                             </a>
 

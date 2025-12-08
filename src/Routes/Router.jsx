@@ -8,6 +8,7 @@ import Login from "../Pages/Login.jsx";
 import Register from "../Pages/Register.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import ViewDetails from "../Pages/ViewDetails.jsx";
+import LoanApplicationForm from "../Pages/LoanApplicationForm.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -46,6 +47,13 @@ export const router = createBrowserRouter([
                             <ViewDetails></ViewDetails>
                         </PrivateRoute>
 
+                },
+                {
+                    path: '/apply-loan/:id',
+                    element:
+                        <PrivateRoute>
+                            <LoanApplicationForm></LoanApplicationForm>
+                        </PrivateRoute>
                 }
             ]
     },
