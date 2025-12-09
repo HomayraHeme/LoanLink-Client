@@ -20,6 +20,7 @@ import ManageLoanApplications from "../Pages/Dashboard/ManageLoanApplication.jsx
 import AddLoan from "../Pages/Dashboard/AddLoans";
 import AddLoans from "../Pages/Dashboard/AddLoans";
 import ManageLoans from "../Pages/Dashboard/ManageLoans.jsx";
+import PendingLoans from "../Pages/Dashboard/PendingLoans.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -106,6 +107,10 @@ export const router = createBrowserRouter([
             {
                 path: 'manage-loans',
                 Component: ManageLoans
+            },
+            {
+                path: 'pending-loans',
+                Component: PendingLoans
             }
 
         ]
