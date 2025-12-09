@@ -16,6 +16,9 @@ import { Component } from "react";
 import ProfilePage from "../Pages/Dashboard/ProfilePage.jsx";
 import ManageUsers from "../Pages/Dashboard/ManageUsers.jsx";
 import ManageAllLoans from "../Pages/Dashboard/ManageAllLoans.jsx";
+import ManageLoanApplications from "../Pages/Dashboard/ManageLoanApplication.jsx";
+import AddLoan from "../Pages/Dashboard/AddLoans";
+import AddLoans from "../Pages/Dashboard/AddLoans";
 
 export const router = createBrowserRouter([
     {
@@ -90,6 +93,14 @@ export const router = createBrowserRouter([
             {
                 path: 'manage-all-loans',
                 Component: ManageAllLoans
+            },
+            {
+                path: 'manage-loan-applications',
+                Component: ManageLoanApplications
+            },
+            {
+                path: 'add-loan',
+                Component: AddLoans
             }
 
         ]

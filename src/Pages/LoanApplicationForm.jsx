@@ -40,7 +40,8 @@ const LoanApplicationForm = () => {
                 loanTitle: loan.title,
                 interestRate: loan.interest_rate,
                 status: 'Pending',
-                applicationFeeStatus: 'Unpaid'
+                applicationFeeStatus: 'Unpaid',
+                loan_category: loan.loan_category
             };
             await axios.post('/loan-applications', payload);
             alert('Application submitted successfully! Redirecting to My Loans.');
@@ -98,6 +99,15 @@ const LoanApplicationForm = () => {
                         <input
                             type="text"
                             value={loan.title}
+                            readOnly
+                            className={readOnlyClasses}
+                        />
+                    </div>
+                    <div>
+                        <label className={`block mb-1 font-semibold ${labelColor}`}>Category</label>
+                        <input
+                            type="text"
+                            value={loan.loan_category}
                             readOnly
                             className={readOnlyClasses}
                         />

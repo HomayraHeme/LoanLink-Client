@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router";
-import { FaHome, FaUsers, FaChartLine, FaBars, FaTimes, FaRegCreditCard, FaUser, FaList } from "react-icons/fa";
+import { FaHome, FaUsers, FaChartLine, FaBars, FaTimes, FaRegCreditCard, FaUser, FaWpforms, FaList } from "react-icons/fa";
+import { MdOutlinePlaylistAdd } from "react-icons/md";
 import { useTheme } from "../Theme/ThemeContext";
 import Navbar from "../Pages/Shared/Navbar";
 import Footer from "../Pages/Shared/Footer";
@@ -117,6 +118,38 @@ const DashboardLayout = () => {
                         >
                             <FaList className="text-lg" />
                             {isDrawerOpen && <span>All Loans</span>}
+                        </NavLink>
+                        <NavLink
+                            to="/dashboard/manage-loan-applications"
+                            className={({ isActive }) =>
+                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                    ? isDark
+                                        ? "bg-gray-700 text-white"
+                                        : "bg-gray-200 text-gray-900"
+                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                }`
+                            }
+                        >
+                            <FaWpforms className="text-lg" />
+                            {isDrawerOpen && <span> Loan Applications</span>}
+                        </NavLink>
+
+
+                        {/* manager */}
+                        <NavLink
+                            to="/dashboard/add-loan"
+                            className={({ isActive }) =>
+                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                    ? isDark
+                                        ? "bg-gray-700 text-white"
+                                        : "bg-gray-200 text-gray-900"
+                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                }`
+                            }
+                        >
+                            <MdOutlinePlaylistAdd
+                                className="text-lg" />
+                            {isDrawerOpen && <span> Add Loan</span>}
                         </NavLink>
                     </nav>
                 </aside>
