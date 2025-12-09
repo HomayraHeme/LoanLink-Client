@@ -19,6 +19,7 @@ import ManageAllLoans from "../Pages/Dashboard/ManageAllLoans.jsx";
 import ManageLoanApplications from "../Pages/Dashboard/ManageLoanApplication.jsx";
 import AddLoan from "../Pages/Dashboard/AddLoans";
 import AddLoans from "../Pages/Dashboard/AddLoans";
+import ManageLoans from "../Pages/Dashboard/ManageLoans.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -101,6 +102,10 @@ export const router = createBrowserRouter([
             {
                 path: 'add-loan',
                 Component: AddLoans
+            },
+            {
+                path: 'manage-loans',
+                Component: ManageLoans
             }
 
         ]

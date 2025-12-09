@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { FaHome, FaUsers, FaChartLine, FaBars, FaTimes, FaRegCreditCard, FaUser, FaWpforms, FaList } from "react-icons/fa";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
+import { TbCheckupList } from "react-icons/tb";
 import { useTheme } from "../Theme/ThemeContext";
 import Navbar from "../Pages/Shared/Navbar";
 import Footer from "../Pages/Shared/Footer";
@@ -150,6 +151,21 @@ const DashboardLayout = () => {
                             <MdOutlinePlaylistAdd
                                 className="text-lg" />
                             {isDrawerOpen && <span> Add Loan</span>}
+                        </NavLink>
+                        <NavLink
+                            to="/dashboard/manage-loans"
+                            className={({ isActive }) =>
+                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                    ? isDark
+                                        ? "bg-gray-700 text-white"
+                                        : "bg-gray-200 text-gray-900"
+                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                }`
+                            }
+                        >
+                            <TbCheckupList
+                                className="text-lg" />
+                            {isDrawerOpen && <span> Manage Loan</span>}
                         </NavLink>
                     </nav>
                 </aside>
