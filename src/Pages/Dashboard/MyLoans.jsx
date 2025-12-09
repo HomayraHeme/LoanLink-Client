@@ -142,6 +142,7 @@ const MyLoans = () => {
                                                         <strong>Contact:</strong> ${loan.contactNumber} <br/>
                                                         <strong>Email:</strong> ${loan.userEmail} <br/>
                                                         <strong>Loan Amount:</strong> $${loan.loanAmount} <br/>
+                                                        
                                                         <strong>Status:</strong> ${loan.status} <br/>
                                                         <strong>Applied At:</strong> ${new Date(loan.appliedAt).toLocaleString()}
                                                     `,
@@ -155,7 +156,7 @@ const MyLoans = () => {
                                         </button>
 
                                         {/* Delete Loan */}
-                                        {loan.status === "Pending" && (
+                                        {loan.status === "Pending" && loan.applicationFeeStatus === "Unpaid" && (
                                             <button
                                                 onClick={() => handleDelete(loan._id)}
                                                 className="text-red-500 hover:text-red-700"
@@ -180,7 +181,10 @@ const MyLoans = () => {
                                                         html: `
                                                             <strong>Email:</strong> ${loan.paymentDetails?.customer_email || loan.userEmail}<br/>
                                                             <strong>Loan ID:</strong> ${loan._id}<br/>
-                                                            <strong>Transaction ID:</strong> ${loan.paymentDetails?.payment_intent || 'N/A'}<br/>
+                                                            <strong>Transaction ID:</strong>  
+                                                            <strong>Transaction ID:</strong> ${loan.transactionId || loan.stripeSessionId || 'N/A'}<br/>
+                                                                ${loan.trackingId ? `<strong>Tracking ID:</strong> ${loan.trackingId} <br/>` : ""}
+
                                                             <strong>Amount:</strong> $${loan.paymentDetails?.amount_total / 100 || loan.loanAmount}<br/>
                                                             <strong>Status:</strong> Paid
                                                         `,
