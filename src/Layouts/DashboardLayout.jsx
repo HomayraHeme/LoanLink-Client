@@ -88,6 +88,20 @@ const DashboardLayout = () => {
                             <FaUser className="text-lg" />
                             {isDrawerOpen && <span>My Profile</span>}
                         </NavLink>
+                        <NavLink
+                            to="/dashboard/manage-users"
+                            className={({ isActive }) =>
+                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                    ? isDark
+                                        ? "bg-gray-700 text-white"
+                                        : "bg-gray-200 text-gray-900"
+                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                }`
+                            }
+                        >
+                            <FaUsers className="text-lg" />
+                            {isDrawerOpen && <span>Manage Users</span>}
+                        </NavLink>
                     </nav>
                 </aside>
 

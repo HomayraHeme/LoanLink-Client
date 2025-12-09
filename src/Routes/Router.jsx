@@ -14,6 +14,7 @@ import DashboardLayout from "../Layouts/DashboardLayout.jsx";
 import PaymentSuccess from "../Pages/Dashboard/PaymentSuccess.jsx";
 import { Component } from "react";
 import ProfilePage from "../Pages/Dashboard/ProfilePage.jsx";
+import ManageUsers from "../Pages/Dashboard/ManageUsers.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -80,6 +81,10 @@ export const router = createBrowserRouter([
             {
                 path: 'profile',
                 Component: ProfilePage
+            },
+            {
+                path: 'manage-users',
+                Component: ManageUsers
             }
 
         ]
