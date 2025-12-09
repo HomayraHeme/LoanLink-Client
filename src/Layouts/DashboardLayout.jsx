@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { FaHome, FaUsers, FaChartLine, FaBars, FaTimes, FaRegCreditCard, FaUser, FaWpforms, FaList } from "react-icons/fa";
-import { MdOutlinePending, MdOutlinePlaylistAdd } from "react-icons/md";
+import { MdOutlinePending, MdOutlinePlaylistAdd, MdOutlinePlaylistAddCheck } from "react-icons/md";
 import { TbCheckupList } from "react-icons/tb";
 import { useTheme } from "../Theme/ThemeContext";
 import Navbar from "../Pages/Shared/Navbar";
@@ -181,6 +181,21 @@ const DashboardLayout = () => {
                             <MdOutlinePending
                                 className="text-lg" />
                             {isDrawerOpen && <span> Pending Loans</span>}
+                        </NavLink>
+                        <NavLink
+                            to="/dashboard/approved-loans"
+                            className={({ isActive }) =>
+                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                    ? isDark
+                                        ? "bg-gray-700 text-white"
+                                        : "bg-gray-200 text-gray-900"
+                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                }`
+                            }
+                        >
+                            <MdOutlinePlaylistAddCheck
+                                className="text-lg" />
+                            {isDrawerOpen && <span> Approved Loans</span>}
                         </NavLink>
                     </nav>
                 </aside>

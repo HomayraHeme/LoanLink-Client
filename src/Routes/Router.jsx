@@ -21,6 +21,7 @@ import AddLoan from "../Pages/Dashboard/AddLoans";
 import AddLoans from "../Pages/Dashboard/AddLoans";
 import ManageLoans from "../Pages/Dashboard/ManageLoans.jsx";
 import PendingLoans from "../Pages/Dashboard/PendingLoans.jsx";
+import ApprovedLoans from "../Pages/Dashboard/ApprovedLoans.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -111,6 +112,10 @@ export const router = createBrowserRouter([
             {
                 path: 'pending-loans',
                 Component: PendingLoans
+            },
+            {
+                path: 'approved-loans',
+                Component: ApprovedLoans
             }
 
         ]
