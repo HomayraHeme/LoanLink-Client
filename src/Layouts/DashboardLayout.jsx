@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router";
-import { FaHome, FaUsers, FaChartLine, FaBars, FaTimes, FaRegCreditCard, FaUser } from "react-icons/fa";
+import { FaHome, FaUsers, FaChartLine, FaBars, FaTimes, FaRegCreditCard, FaUser, FaList } from "react-icons/fa";
 import { useTheme } from "../Theme/ThemeContext";
 import Navbar from "../Pages/Shared/Navbar";
 import Footer from "../Pages/Shared/Footer";
@@ -88,6 +88,8 @@ const DashboardLayout = () => {
                             <FaUser className="text-lg" />
                             {isDrawerOpen && <span>My Profile</span>}
                         </NavLink>
+
+                        {/* admin */}
                         <NavLink
                             to="/dashboard/manage-users"
                             className={({ isActive }) =>
@@ -101,6 +103,20 @@ const DashboardLayout = () => {
                         >
                             <FaUsers className="text-lg" />
                             {isDrawerOpen && <span>Manage Users</span>}
+                        </NavLink>
+                        <NavLink
+                            to="/dashboard/manage-all-loans"
+                            className={({ isActive }) =>
+                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                    ? isDark
+                                        ? "bg-gray-700 text-white"
+                                        : "bg-gray-200 text-gray-900"
+                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                }`
+                            }
+                        >
+                            <FaList className="text-lg" />
+                            {isDrawerOpen && <span>All Loans</span>}
                         </NavLink>
                     </nav>
                 </aside>
