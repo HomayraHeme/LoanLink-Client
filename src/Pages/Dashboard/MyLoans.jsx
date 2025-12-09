@@ -1,40 +1,64 @@
 import React, { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query"; // ✅ TanStack Query এখানেই আছে
 import { FaEye, FaTimes, FaMoneyCheckAlt } from "react-icons/fa";
-import useAxios from "../../Hooks/useAxios";
 import { useTheme } from "../../Theme/ThemeContext";
 import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
 import { useLocation, useNavigate } from "react-router";
+import useAxiosSecure from "../../Hooks/useAxiosSeceure";
 
 const MyLoans = () => {
     const { theme } = useTheme();
     const isDark = theme === "dark";
-    const axios = useAxios();
+    const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    // ✅ Handle payment success redirect
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        if (params.get('payment') === 'success') {
-            Swal.fire("Success!", "Your payment was successful.", "success");
-        }
-    }, [location, navigate]);
-
-    // ✅ Fetch user's loans
+    // --- Fetch user's loans (TanStack Query) ---
     const { data: myLoans = [], isLoading, isError, refetch } = useQuery({
         queryKey: ["myLoans", user?.email],
-        enabled: !!user?.email,
+        enabled: !!user?.email && !!axiosSecure,
         queryFn: async () => {
-            const res = await axios.get(`/my-loans?email=${user.email}`);
+            const res = await axiosSecure.get(`/my-loans?email=${user.email}`);
             return res.data;
         },
     });
 
-    // Delete loan
+    // --- Payment Success Handling ---
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const isSuccess = params.get('success');
+        const sessionId = params.get('session_id');
+
+        if (isSuccess === 'true' && sessionId) {
+
+            // সার্ভারে PATCH রিকোয়েস্ট (ক্লায়েন্ট-সাইড ফিলাপ লজিক)
+            axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
+                .then(res => {
+                    console.log('Payment success update response:', res.data);
+
+                    if (res.data.modifiedCount > 0) {
+                        Swal.fire("Success!", "Your payment was successful and application updated.", "success");
+                        refetch(); // ডেটা রিফ্রেশ করুন
+                    } else if (res.data.success === false) {
+                        Swal.fire("Error", "Payment confirmed but database update failed.", "error");
+                    }
+
+                    // URL থেকে প্যারামিটারগুলো সরিয়ে দিন এবং Clean Redirect
+                    navigate(location.pathname, { replace: true });
+
+                })
+                .catch(err => {
+                    console.error("Error during payment success update:", err);
+                    Swal.fire("Error", "Failed to finalize payment and update loan status.", "error");
+                    navigate(location.pathname, { replace: true });
+                });
+        }
+    }, [location.search, navigate, axiosSecure, refetch]); // refetch added to dependency array
+
+    // --- Delete loan ---
     const handleDelete = async (id) => {
         try {
             const confirm = await Swal.fire({
@@ -48,7 +72,7 @@ const MyLoans = () => {
             });
 
             if (confirm.isConfirmed) {
-                await axios.delete(`/loan-applications/${id}`);
+                await axiosSecure.delete(`/loan-applications/${id}`);
                 Swal.fire("Deleted!", "Your loan has been deleted.", "success");
                 refetch();
             }
@@ -58,7 +82,7 @@ const MyLoans = () => {
         }
     };
 
-    // Pay Fee
+    // --- Pay Fee ---
     const handlePay = async (loan) => {
         try {
             const confirm = await Swal.fire({
@@ -70,7 +94,7 @@ const MyLoans = () => {
 
             if (confirm.isConfirmed) {
                 // Create Stripe session
-                const { data } = await axios.post('/create-payment-session', {
+                const { data } = await axiosSecure.post('/create-payment-session', {
                     userEmail: user.email,
                     loanId: loan._id,
                 });
@@ -115,7 +139,8 @@ const MyLoans = () => {
                         ) : (
                             myLoans.map((loan) => (
                                 <tr key={loan._id} className={`border-b ${isDark ? "border-gray-700" : "border-gray-200"}`}>
-                                    <td className="py-3 px-4">{loan._id}</td>
+                                    {/* ✅ Added title attribute for full ID visibility on hover */}
+                                    <td className="py-3 px-4 truncate max-w-[100px]" title={loan._id}>{loan._id}</td>
                                     <td className="py-3 px-4">{loan.loanTitle || loan.loanType}</td>
                                     <td className="py-3 px-4">${loan.loanAmount?.toLocaleString()}</td>
                                     <td className="py-3 px-4">
@@ -130,7 +155,7 @@ const MyLoans = () => {
                                             {loan.status}
                                         </span>
                                     </td>
-                                    <td className="py-3 px-4 flex gap-3 items-center text-center">
+                                    <td className="py-3 px-4 flex gap-3 items-center justify-center">
                                         {/* View Loan Info */}
                                         <button
                                             onClick={() =>
@@ -142,7 +167,6 @@ const MyLoans = () => {
                                                         <strong>Contact:</strong> ${loan.contactNumber} <br/>
                                                         <strong>Email:</strong> ${loan.userEmail} <br/>
                                                         <strong>Loan Amount:</strong> $${loan.loanAmount} <br/>
-                                                        
                                                         <strong>Status:</strong> ${loan.status} <br/>
                                                         <strong>Applied At:</strong> ${new Date(loan.appliedAt).toLocaleString()}
                                                     `,
@@ -150,7 +174,7 @@ const MyLoans = () => {
                                                     confirmButtonText: 'Close'
                                                 })
                                             }
-                                            className="text-blue-600 hover:text-blue-800"
+                                            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600"
                                         >
                                             <FaEye />
                                         </button>
@@ -165,11 +189,12 @@ const MyLoans = () => {
                                             </button>
                                         )}
 
-                                        {/* Pay Fee */}
+                                        {/* Pay Fee / Paid Status */}
                                         {loan.applicationFeeStatus === "Unpaid" ? (
                                             <button
                                                 onClick={() => handlePay(loan)}
-                                                className="flex items-center gap-1 text-green-600 hover:text-green-800"
+                                                className="flex items-center gap-1 text-green-600 hover:text-green-800 font-semibold"
+                                                title="Pay Application Fee ($10)"
                                             >
                                                 <FaMoneyCheckAlt /> Pay
                                             </button>
@@ -179,20 +204,17 @@ const MyLoans = () => {
                                                     Swal.fire({
                                                         title: "Payment Details",
                                                         html: `
-                                                            <strong>Email:</strong> ${loan.paymentDetails?.customer_email || loan.userEmail}<br/>
+                                                            <strong>Email:</strong> ${loan.userEmail}<br/>
                                                             <strong>Loan ID:</strong> ${loan._id}<br/>
-                                                            <strong>Transaction ID:</strong>  
-                                                            <strong>Transaction ID:</strong> ${loan.transactionId || loan.stripeSessionId || 'N/A'}<br/>
-                                                                ${loan.trackingId ? `<strong>Tracking ID:</strong> ${loan.trackingId} <br/>` : ""}
-
-                                                            <strong>Amount:</strong> $${loan.paymentDetails?.amount_total / 100 || loan.loanAmount}<br/>
+                                                            <strong>Transaction ID:</strong> ${loan.transactionId || 'N/A'}<br/>
+                                                            ${loan.trackingId ? `<strong>Tracking ID:</strong> ${loan.trackingId} <br/>` : ""}
                                                             <strong>Status:</strong> Paid
                                                         `,
-                                                        icon: "info",
+                                                        icon: "success",
                                                         confirmButtonText: "Close"
                                                     });
                                                 }}
-                                                className="bg-green-600 text-white text-xs px-2 py-1 rounded"
+                                                className="bg-green-600 text-white text-xs px-2 py-1 rounded hover:bg-green-700"
                                             >
                                                 Paid
                                             </button>

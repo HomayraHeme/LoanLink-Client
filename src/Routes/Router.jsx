@@ -12,6 +12,8 @@ import LoanApplicationForm from "../Pages/LoanApplicationForm.jsx";
 import MyLoans from "../Pages/Dashboard/MyLoans.jsx";
 import DashboardLayout from "../Layouts/DashboardLayout.jsx";
 import PaymentSuccess from "../Pages/Dashboard/PaymentSuccess.jsx";
+import { Component } from "react";
+import ProfilePage from "../Pages/Dashboard/ProfilePage.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -74,6 +76,10 @@ export const router = createBrowserRouter([
             {
                 path: 'payment-success',
                 Component: PaymentSuccess
+            },
+            {
+                path: 'profile',
+                Component: ProfilePage
             }
 
         ]
