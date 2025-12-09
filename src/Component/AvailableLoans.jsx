@@ -12,7 +12,7 @@ const AvailableLoans = () => {
     const { data: loans = [], isLoading, isError } = useQuery({
         queryKey: ["availableLoans"],
         queryFn: async () => {
-            const res = await axiosInstance.get("/loans");
+            const res = await axiosInstance.get("/AvailableLoans");
             return res.data;
         },
     });
@@ -24,6 +24,7 @@ const AvailableLoans = () => {
 
     if (loans.length === 0)
         return <p className="text-center mt-10 text-gray-500">No loans available at the moment.</p>;
+    const displayedLoans = loans.slice(0, 6);
 
     return (
         <div>
@@ -34,11 +35,11 @@ const AvailableLoans = () => {
             </div>
             <div
                 className={`w-11/12 grid sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-7xl mx-auto py-10 px-4 ${isDark
-                        ? "bg-gray-900 text-white"
-                        : "bg-green-100 text-gray-900"
+                    ? "bg-gray-900 text-white"
+                    : "bg-green-100 text-gray-900"
                     }`}
             >
-                {loans.map((loan) => (
+                {displayedLoans.map((loan) => (
                     <div
                         key={loan._id}
                         className={`rounded-lg shadow-lg p-4 transition-transform duration-300 hover:scale-105 ${isDark ? "bg-gray-800" : "bg-white"

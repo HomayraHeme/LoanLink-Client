@@ -14,6 +14,7 @@ const ManageAllLoans = () => {
     const { data: loans = [], isLoading, refetch } = useQuery({
         queryKey: ["allLoans"],
         queryFn: async () => {
+            // ধরে নিচ্ছি /admin/loans রুটটি সমস্ত লোন ডেটা দেয়
             const res = await axiosSecure.get("/admin/loans");
             return res.data;
         },
@@ -21,6 +22,20 @@ const ManageAllLoans = () => {
             console.error("Error fetching loans:", err);
             Swal.fire("Error", "Failed to load loans", "error");
         },
+    });
+
+    // --- ৩. ✅ Edit Mutation (নতুন) ---
+    const editMutation = useMutation({
+        mutationFn: ({ id, updatedData }) =>
+            axiosSecure.patch(`/admin/loans/${id}`, updatedData), // ধরে নিচ্ছি PATCH রুট: /admin/loans/:id
+        onSuccess: () => {
+            Swal.fire("Updated!", "Loan details updated successfully.", "success");
+        },
+        onError: (err) => {
+            console.error("Edit error:", err);
+            Swal.fire("Error", "Failed to update loan details", "error");
+        },
+        onSettled: () => refetch(),
     });
 
     // ✅ Delete mutation
@@ -48,7 +63,13 @@ const ManageAllLoans = () => {
         onSettled: () => refetch(),
     });
 
-    // ✅ Handlers
+    // --- ✅ Handlers ---
+
+    // এই ফাংশনটি SweetAlert2 ফর্ম ডেটা নিয়ে mutation ট্রিগার করবে
+    const updateLoanHandler = async (id, updatedData) => {
+        editMutation.mutate({ id, updatedData });
+    };
+
     const handleDelete = (loan) => {
         Swal.fire({
             title: "Are you sure?",
@@ -69,12 +90,47 @@ const ManageAllLoans = () => {
         toggleMutation.mutate({ id: loan._id, showOnHome: !loan.showOnHome });
     };
 
+    // ✅ Edit Modal
     const handleEdit = (loan) => {
         Swal.fire({
-            title: "Edit Feature Coming Soon!",
-            text: `You can redirect to /dashboard/edit-loan/${loan._id} or open a modal.`,
-            icon: "info",
-            confirmButtonColor: "#10B981",
+            title: `Edit Loan: ${loan.title}`,
+            html: `
+                <div class="space-y-4 text-left p-2">
+                    <label class="block text-gray-700 dark:text-gray-300">Title</label>
+                    <input id="swal-title" class="swal2-input w-full" value="${loan.title || ''}" placeholder="Loan Title">
+                    
+                    <label class="block text-gray-700 dark:text-gray-300">Interest Rate (%)</label>
+                    <input id="swal-interest" type="number" step="0.01" class="swal2-input w-full" value="${loan.interest_rate || 0}" placeholder="Interest Rate">
+
+                    <label class="block text-gray-700 dark:text-gray-300">Category</label>
+                    <input id="swal-category" class="swal2-input w-full" value="${loan.loan_category || ''}" placeholder="Category">
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Save Changes',
+            showLoaderOnConfirm: true,
+            customClass: {
+                popup: isDark ? 'bg-gray-800 text-white border border-gray-700' : 'bg-white text-gray-800',
+                title: isDark ? 'text-white' : 'text-gray-800',
+                input: isDark ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-800',
+            },
+            preConfirm: () => {
+                const title = document.getElementById('swal-title').value;
+                const interest_rate = parseFloat(document.getElementById('swal-interest').value);
+                const loan_category = document.getElementById('swal-category').value;
+
+                if (!title || isNaN(interest_rate) || !loan_category) {
+                    Swal.showValidationMessage('Please fill out all required fields.');
+                    return false;
+                }
+
+                return { title, interest_rate, loan_category };
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // আপডেট ডেটা হ্যান্ডলারকে কল করা
+                updateLoanHandler(loan._id, result.value);
+            }
         });
     };
 
@@ -127,19 +183,21 @@ const ManageAllLoans = () => {
                                     checked={loan.showOnHome || false}
                                     onChange={() => handleToggle(loan)}
                                     className="w-5 h-5 accent-emerald-600 cursor-pointer"
-                                    disabled={toggleMutation.isLoading}
+                                    disabled={toggleMutation.isPending}
                                 />
                             </td>
                             <td className="px-4 py-2 flex justify-center gap-3">
                                 <button
                                     onClick={() => handleEdit(loan)}
                                     className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded flex items-center gap-1 transition-colors"
+                                    disabled={editMutation.isPending}
                                 >
                                     <FaEdit /> Edit
                                 </button>
                                 <button
                                     onClick={() => handleDelete(loan)}
                                     className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded flex items-center gap-1 transition-colors"
+                                    disabled={deleteMutation.isPending}
                                 >
                                     <FaTrash /> Delete
                                 </button>
