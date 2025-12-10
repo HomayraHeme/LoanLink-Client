@@ -22,6 +22,9 @@ import AddLoans from "../Pages/Dashboard/AddLoans";
 import ManageLoans from "../Pages/Dashboard/ManageLoans.jsx";
 import PendingLoans from "../Pages/Dashboard/PendingLoans.jsx";
 import ApprovedLoans from "../Pages/Dashboard/ApprovedLoans.jsx";
+import AdminRoute from "./AdminRoute.jsx";
+import ManagerRoute from "./ManagerRoute.jsx";
+import BorrowerRoute from "./BorrowerRoute.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -78,45 +81,49 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: 'my-loans',
-                Component: MyLoans
+                element: <BorrowerRoute><MyLoans></MyLoans></BorrowerRoute>
 
             },
             {
                 path: 'payment-success',
-                Component: PaymentSuccess
+                Component: <BorrowerRoute><PaymentSuccess></PaymentSuccess></BorrowerRoute>
             },
             {
                 path: 'profile',
-                Component: ProfilePage
+                element: <BorrowerRoute><ProfilePage></ProfilePage></BorrowerRoute>
             },
             {
                 path: 'manage-users',
-                Component: ManageUsers
+                element: <AdminRoute><ManageUsers></ManageUsers></AdminRoute>
             },
             {
                 path: 'manage-all-loans',
-                Component: ManageAllLoans
+                element: <AdminRoute><ManageAllLoans></ManageAllLoans></AdminRoute>
             },
             {
                 path: 'manage-loan-applications',
-                Component: ManageLoanApplications
+                element: <AdminRoute><ManageLoanApplications></ManageLoanApplications></AdminRoute>
             },
             {
                 path: 'add-loan',
-                Component: AddLoans
+                element: <ManagerRoute><AddLoans></AddLoans></ManagerRoute>
             },
             {
                 path: 'manage-loans',
-                Component: ManageLoans
+                element: <ManagerRoute><ManageLoans></ManageLoans></ManagerRoute>
             },
             {
                 path: 'pending-loans',
-                Component: PendingLoans
+                element: <ManagerRoute><PendingLoans></PendingLoans></ManagerRoute>
             },
             {
                 path: 'approved-loans',
-                Component: ApprovedLoans
-            }
+                element: <ManagerRoute><ApprovedLoans></ApprovedLoans></ManagerRoute>
+            },
+            {
+                path: 'profile',
+                element: <ManagerRoute><ProfilePage></ProfilePage></ManagerRoute>
+            },
 
         ]
     }

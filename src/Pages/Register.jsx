@@ -18,17 +18,23 @@ const Register = () => {
     const isDark = theme === 'dark';
 
     const handleRegistration = (data) => {
-        console.log(data);
+        console.log("🟢 Form Data Submitted:", data);
         const profileImg = data.photo[0];
+
         registerUser(data.email, data.password)
             .then(() => {
+                console.log("✅ Firebase user created successfully");
+
                 const formData = new FormData();
                 formData.append('image', profileImg);
                 const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`;
 
+                // 🟡 Upload image
                 axios.post(image_API_URL, formData)
                     .then(res => {
                         const photoURL = res.data.data.url;
+                        console.log("🖼️ Uploaded photo URL:", photoURL);
+
                         const userInfo = {
                             email: data.email,
                             displayName: data.name,
@@ -36,29 +42,45 @@ const Register = () => {
                             role: data.role
                         };
 
+                        console.log("📤 Sending user info to backend:", userInfo);
+
+
                         axiosSecure.post('/users', userInfo)
                             .then(res => {
+                                console.log(" Backend response:", res.data);
                                 if (res.data.insertedId) {
-                                    console.log('User created in database');
+                                    console.log(' User created in database');
+                                } else if (res.data.message) {
+                                    console.warn(" Warning:", res.data.message);
                                 }
+                            })
+                            .catch(err => {
+                                console.error(" Error while saving user to backend:", err);
                             });
+
 
                         const userProfile = { displayName: data.name, photoURL };
                         updateUserProfile(userProfile)
                             .then(() => {
+                                console.log("✅ Firebase profile updated successfully");
+
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Registration Successful',
-                                    text: 'Welcome to Zap Shift!',
+                                    text: 'Welcome to LoanLink!',
                                     timer: 2000,
                                     showConfirmButton: false
                                 });
                                 navigate(location.state || '/');
                             })
-                            .catch(error => console.log(error));
+                            .catch(error => console.error(" Error updating profile:", error));
+                    })
+                    .catch(error => {
+                        console.error(" Image upload failed:", error);
                     });
             })
             .catch(error => {
+                console.error(" Firebase registration error:", error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Registration Failed',
@@ -78,7 +100,7 @@ const Register = () => {
     return (
         <div className={`${bgColor} min-h-screen flex items-center justify-center py-10 transition-colors duration-500`}>
             <div className={`card w-full max-w-md shadow-2xl rounded-2xl ${cardBg} p-6`}>
-                <h3 className={`text-3xl font-bold text-center mb-1 ${linkColor}`}>Welcome to Zap Shift</h3>
+                <h3 className={`text-3xl font-bold text-center mb-1 ${linkColor}`}>Welcome to LoanLink</h3>
                 <p className={`text-center mb-6 ${textColor}`}>Create your account to get started</p>
 
                 <form onSubmit={handleSubmit(handleRegistration)} className="space-y-4">
@@ -110,7 +132,6 @@ const Register = () => {
                             <option value="">Select Role</option>
                             <option value="borrower">Borrower</option>
                             <option value="manager">Manager</option>
-                            <option value="admin">Admin</option>
                         </select>
                         {errors.role && <p className="text-red-500">Role is required</p>}
                     </div>
@@ -123,7 +144,7 @@ const Register = () => {
                             {...register('password', {
                                 required: true,
                                 minLength: 6,
-                                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/
+                                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/,
                             })}
                             className={`input w-full ${inputBg}`}
                             placeholder="Password"
@@ -133,11 +154,16 @@ const Register = () => {
                         {errors.password?.type === 'pattern' && <p className='text-red-500'>Password must include uppercase, lowercase, number, and special character</p>}
                     </div>
 
-                    <button type="submit" className={`w-full py-3 rounded-md font-semibold ${btnColor} mt-2`}>Register</button>
+                    <button type="submit" className={`w-full py-3 rounded-md font-semibold ${btnColor} mt-2`}>
+                        Register
+                    </button>
                 </form>
 
                 <p className={`text-center mt-4 ${textColor}`}>
-                    Already have an account? <Link state={location.state} className={`underline ${linkColor}`} to="/login">Login</Link>
+                    Already have an account?{' '}
+                    <Link state={location.state} className={`underline ${linkColor}`} to="/login">
+                        Login
+                    </Link>
                 </p>
 
                 <div className="mt-6">

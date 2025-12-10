@@ -167,6 +167,7 @@ const ManageUsers = () => {
                                 >
                                     <option value="borrower">Borrower</option>
                                     <option value="manager">Manager</option>
+                                    <option value="admin">Admin</option>
                                 </select>
                             </td>
                             <td className="px-4 py-2">

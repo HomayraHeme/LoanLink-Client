@@ -6,11 +6,15 @@ import { TbCheckupList } from "react-icons/tb";
 import { useTheme } from "../Theme/ThemeContext";
 import Navbar from "../Pages/Shared/Navbar";
 import Footer from "../Pages/Shared/Footer";
+import useRole from "../Hooks/useRole";
 
 const DashboardLayout = () => {
     const { theme } = useTheme();
     const isDark = theme === "dark";
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+
+    const { role } = useRole();
+    console.log('Current Role:', role);
 
     return (
         <div
@@ -58,145 +62,157 @@ const DashboardLayout = () => {
                             {isDrawerOpen && <span>Home</span>}
                         </NavLink>
 
-                        {/* NavLink - My Loans */}
-                        <NavLink
-                            to="/dashboard/my-loans"
-                            className={({ isActive }) =>
-                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
-                                    ? isDark
-                                        ? "bg-gray-700 text-white"
-                                        : "bg-gray-200 text-gray-900"
-                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                                }`
-                            }
-                        >
-                            <FaRegCreditCard
-                                className="text-lg" />
-                            {isDrawerOpen && <span>My Loans</span>}
-                        </NavLink>
+                        {
+                            role === "borrower" && <>
+                                {/* NavLink - My Loans */}
+                                <NavLink
+                                    to="/dashboard/my-loans"
+                                    className={({ isActive }) =>
+                                        `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                            ? isDark
+                                                ? "bg-gray-700 text-white"
+                                                : "bg-gray-200 text-gray-900"
+                                            : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                        }`
+                                    }
+                                >
+                                    <FaRegCreditCard
+                                        className="text-lg" />
+                                    {isDrawerOpen && <span>My Loans</span>}
+                                </NavLink>
 
-                        {/* NavLink - Reports */}
-                        <NavLink
-                            to="/dashboard/profile"
-                            className={({ isActive }) =>
-                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
-                                    ? isDark
-                                        ? "bg-gray-700 text-white"
-                                        : "bg-gray-200 text-gray-900"
-                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                                }`
-                            }
-                        >
-                            <FaUser className="text-lg" />
-                            {isDrawerOpen && <span>My Profile</span>}
-                        </NavLink>
-
+                                {/* NavLink - Reports */}
+                                <NavLink
+                                    to="/dashboard/profile"
+                                    className={({ isActive }) =>
+                                        `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                            ? isDark
+                                                ? "bg-gray-700 text-white"
+                                                : "bg-gray-200 text-gray-900"
+                                            : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                        }`
+                                    }
+                                >
+                                    <FaUser className="text-lg" />
+                                    {isDrawerOpen && <span>My Profile</span>}
+                                </NavLink>
+                            </>
+                        }
                         {/* admin */}
-                        <NavLink
-                            to="/dashboard/manage-users"
-                            className={({ isActive }) =>
-                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
-                                    ? isDark
-                                        ? "bg-gray-700 text-white"
-                                        : "bg-gray-200 text-gray-900"
-                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                                }`
-                            }
-                        >
-                            <FaUsers className="text-lg" />
-                            {isDrawerOpen && <span>Manage Users</span>}
-                        </NavLink>
-                        <NavLink
-                            to="/dashboard/manage-all-loans"
-                            className={({ isActive }) =>
-                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
-                                    ? isDark
-                                        ? "bg-gray-700 text-white"
-                                        : "bg-gray-200 text-gray-900"
-                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                                }`
-                            }
-                        >
-                            <FaList className="text-lg" />
-                            {isDrawerOpen && <span>All Loans</span>}
-                        </NavLink>
-                        <NavLink
-                            to="/dashboard/manage-loan-applications"
-                            className={({ isActive }) =>
-                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
-                                    ? isDark
-                                        ? "bg-gray-700 text-white"
-                                        : "bg-gray-200 text-gray-900"
-                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                                }`
-                            }
-                        >
-                            <FaWpforms className="text-lg" />
-                            {isDrawerOpen && <span> Loan Applications</span>}
-                        </NavLink>
-
+                        {
+                            role === "admin" && <>
+                                <NavLink
+                                    to="/dashboard/manage-users"
+                                    className={({ isActive }) =>
+                                        `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                            ? isDark
+                                                ? "bg-gray-700 text-white"
+                                                : "bg-gray-200 text-gray-900"
+                                            : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                        }`
+                                    }
+                                >
+                                    <FaUsers className="text-lg" />
+                                    {isDrawerOpen && <span>Manage Users</span>}
+                                </NavLink>
+                                <NavLink
+                                    to="/dashboard/manage-all-loans"
+                                    className={({ isActive }) =>
+                                        `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                            ? isDark
+                                                ? "bg-gray-700 text-white"
+                                                : "bg-gray-200 text-gray-900"
+                                            : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                        }`
+                                    }
+                                >
+                                    <FaList className="text-lg" />
+                                    {isDrawerOpen && <span>All Loans</span>}
+                                </NavLink>
+                                <NavLink
+                                    to="/dashboard/manage-loan-applications"
+                                    className={({ isActive }) =>
+                                        `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                            ? isDark
+                                                ? "bg-gray-700 text-white"
+                                                : "bg-gray-200 text-gray-900"
+                                            : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                        }`
+                                    }
+                                >
+                                    <FaWpforms className="text-lg" />
+                                    {isDrawerOpen && <span> Loan Applications</span>}
+                                </NavLink>
+                            </>
+                        }
 
                         {/* manager */}
-                        <NavLink
-                            to="/dashboard/add-loan"
-                            className={({ isActive }) =>
-                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
-                                    ? isDark
-                                        ? "bg-gray-700 text-white"
-                                        : "bg-gray-200 text-gray-900"
-                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                                }`
-                            }
-                        >
-                            <MdOutlinePlaylistAdd
-                                className="text-lg" />
-                            {isDrawerOpen && <span> Add Loan</span>}
-                        </NavLink>
-                        <NavLink
-                            to="/dashboard/manage-loans"
-                            className={({ isActive }) =>
-                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
-                                    ? isDark
-                                        ? "bg-gray-700 text-white"
-                                        : "bg-gray-200 text-gray-900"
-                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                                }`
-                            }
-                        >
-                            <TbCheckupList
-                                className="text-lg" />
-                            {isDrawerOpen && <span> Manage Loan</span>}
-                        </NavLink>
-                        <NavLink
-                            to="/dashboard/pending-loans"
-                            className={({ isActive }) =>
-                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
-                                    ? isDark
-                                        ? "bg-gray-700 text-white"
-                                        : "bg-gray-200 text-gray-900"
-                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                                }`
-                            }
-                        >
-                            <MdOutlinePending
-                                className="text-lg" />
-                            {isDrawerOpen && <span> Pending Loans</span>}
-                        </NavLink>
-                        <NavLink
-                            to="/dashboard/approved-loans"
-                            className={({ isActive }) =>
-                                `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
-                                    ? isDark
-                                        ? "bg-gray-700 text-white"
-                                        : "bg-gray-200 text-gray-900"
-                                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                                }`
-                            }
-                        >
-                            <MdOutlinePlaylistAddCheck
-                                className="text-lg" />
-                            {isDrawerOpen && <span> Approved Loans</span>}
-                        </NavLink>
+                        {role === "manager" && <>
+
+                            <NavLink
+                                to="/dashboard/add-loan"
+                                className={({ isActive }) =>
+                                    `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                        ? isDark
+                                            ? "bg-gray-700 text-white"
+                                            : "bg-gray-200 text-gray-900"
+                                        : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    }`
+                                }
+                            >
+                                <MdOutlinePlaylistAdd
+                                    className="text-lg" />
+                                {isDrawerOpen && <span> Add Loan</span>}
+                            </NavLink>
+                            <NavLink
+                                to="/dashboard/manage-loans"
+                                className={({ isActive }) =>
+                                    `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                        ? isDark
+                                            ? "bg-gray-700 text-white"
+                                            : "bg-gray-200 text-gray-900"
+                                        : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    }`
+                                }
+                            >
+                                <TbCheckupList
+                                    className="text-lg" />
+                                {isDrawerOpen && <span> Manage Loan</span>}
+                            </NavLink>
+                            <NavLink
+                                to="/dashboard/pending-loans"
+                                className={({ isActive }) =>
+                                    `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                        ? isDark
+                                            ? "bg-gray-700 text-white"
+                                            : "bg-gray-200 text-gray-900"
+                                        : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    }`
+                                }
+                            >
+                                <MdOutlinePending
+                                    className="text-lg" />
+                                {isDrawerOpen && <span> Pending Loans</span>}
+                            </NavLink>
+                            <NavLink
+                                to="/dashboard/approved-loans"
+                                className={({ isActive }) =>
+                                    `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                        ? isDark
+                                            ? "bg-gray-700 text-white"
+                                            : "bg-gray-200 text-gray-900"
+                                        : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    }`
+                                }
+                            >
+                                <MdOutlinePlaylistAddCheck
+                                    className="text-lg" />
+                                {isDrawerOpen && <span> Approved Loans</span>}
+                            </NavLink>
+                        </>
+                        }
+
+
                     </nav>
                 </aside>
 
