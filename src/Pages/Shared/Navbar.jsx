@@ -3,6 +3,8 @@ import { NavLink, Outlet, useNavigate } from 'react-router';
 import logoImg from '../../assets/loanlogo-removebg-preview.png';
 import { useTheme } from '../../Theme/ThemeContext';
 import useAuth from '../../Hooks/useAuth';
+import Logo from './Logo';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -14,10 +16,25 @@ const Navbar = () => {
 
     const handleLogOut = () => {
         logOut()
-            .then()
-            .catch(error => {
-                console.log(error);
+            .then(() => {
+                localStorage.removeItem("access-token");
+                Swal.fire({
+                    icon: "success",
+                    title: "Logged Out",
+                    text: "You have been successfully logged out!",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                navigate("/login");
             })
+            .catch(error => {
+                console.error(error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Logout Failed",
+                    text: "Something went wrong. Please try again.",
+                });
+            });
     }
     // Avatar setup
     const avatar = user?.photoURL ? (
@@ -52,12 +69,7 @@ const Navbar = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center h-16 gap-4">
                         {/* Logo */}
-                        <div className="flex items-center">
-                            <NavLink to="/" className="flex items-center gap-3">
-                                <img src={logoImg} alt="LoanLink" className="h-10 w-auto" />
-                                <span className="font-semibold hidden sm:inline">LoanLink</span>
-                            </NavLink>
-                        </div>
+                        <Logo></Logo>
 
                         {/* Main Links */}
                         <nav className="hidden md:flex flex-1 justify-center items-center gap-1">

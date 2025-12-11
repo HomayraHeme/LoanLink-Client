@@ -140,7 +140,6 @@ const ManageUsers = () => {
             >
                 <thead>
                     <tr className={`${headerBg}`}>
-                        <th className="border px-4 py-2">Name</th>
                         <th className="border px-4 py-2">Email</th>
                         <th className="border px-4 py-2">Role</th>
                         <th className="border px-4 py-2">Status</th>
@@ -154,7 +153,6 @@ const ManageUsers = () => {
                             className={`${isDark ? "border-gray-700" : "border-gray-300"
                                 } border hover:bg-opacity-90 transition-colors`}
                         >
-                            <td className="px-4 py-2">{user.name}</td>
                             <td className="px-4 py-2">{user.email}</td>
                             <td className="px-4 py-2">
                                 <select

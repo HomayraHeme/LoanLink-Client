@@ -209,6 +209,20 @@ const DashboardLayout = () => {
                                     className="text-lg" />
                                 {isDrawerOpen && <span> Approved Loans</span>}
                             </NavLink>
+                            <NavLink
+                                to="/dashboard/profile"
+                                className={({ isActive }) =>
+                                    `flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition ${isActive
+                                        ? isDark
+                                            ? "bg-gray-700 text-white"
+                                            : "bg-gray-200 text-gray-900"
+                                        : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                                    }`
+                                }
+                            >
+                                <FaUser className="text-lg" />
+                                {isDrawerOpen && <span>My Profile</span>}
+                            </NavLink>
                         </>
                         }
 

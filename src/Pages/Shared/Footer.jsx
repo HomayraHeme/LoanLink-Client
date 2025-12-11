@@ -1,6 +1,7 @@
 import React from "react";
 import logoImg from "../../assets/loanlogo-removebg-preview.png";
 import { useTheme } from "../../Theme/ThemeContext";
+import Logo from "./Logo";
 
 const Footer = () => {
     const { theme } = useTheme();
@@ -18,64 +19,57 @@ const Footer = () => {
 
     return (
         <footer
-            className={`footer p-8 sm:p-10 ${bgColor} ${textColor} transition-colors duration-500`}
+            className={`${bgColor} ${textColor} transition-colors duration-500 px-6 sm:px-10 py-12`}
         >
-            <div
-                className="
-          max-w-7xl mx-auto w-full
-          grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
-          gap-8 md:gap-10
-          place-items-start
-        "
-            >
-                {/* 1️⃣ Logo & Info */}
-                <aside className="flex flex-col sm:flex-row sm:items-center gap-4 text-center sm:text-left">
-                    <img
-                        src={logoImg}
-                        alt="LoanLink"
-                        className="h-12 w-auto rounded-md mx-auto sm:mx-0"
-                    />
+            {/*  Main Grid */}
+            <div className="max-w-7xl mx-auto w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 text-center sm:text-left">
+
+                {/* 1 Logo & Info */}
+                <aside className=" items-center gap-4 justify-center sm:justify-start">
+                    <div className="flex items-center justify-center sm:justify-start mb-3">
+                        <Logo></Logo>
+                    </div>
                     <div>
-                        <p className="font-bold text-lg">LoanLink</p>
-                        <p className={`text-sm ${subText}`}>
-                            Providing reliable loans and financial services
+
+                        <p className={`text-sm sm:text-base ${subText}`}>
+                            Providing reliable loans and financial services.
                         </p>
                     </div>
                 </aside>
 
-                {/* 2️⃣ Services */}
+                {/* 2Services */}
                 <nav className="flex flex-col items-center sm:items-start space-y-2">
-                    <h6 className="footer-title font-semibold text-base">Services</h6>
+                    <h6 className="font-semibold text-base sm:text-lg mb-2">Services</h6>
                     <a className={`link link-hover ${hoverColor} ${subText}`}>Loan Application</a>
                     <a className={`link link-hover ${hoverColor} ${subText}`}>Credit Check</a>
                     <a className={`link link-hover ${hoverColor} ${subText}`}>Financial Advice</a>
                     <a className={`link link-hover ${hoverColor} ${subText}`}>Investment Plans</a>
                 </nav>
 
-                {/* 3️⃣ Company */}
+                {/* 3 Company */}
                 <nav className="flex flex-col items-center sm:items-start space-y-2">
-                    <h6 className="footer-title font-semibold text-base">Company</h6>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>About us</a>
+                    <h6 className="font-semibold text-base sm:text-lg mb-2">Company</h6>
+                    <a className={`link link-hover ${hoverColor} ${subText}`}>About Us</a>
                     <a className={`link link-hover ${hoverColor} ${subText}`}>Careers</a>
                     <a className={`link link-hover ${hoverColor} ${subText}`}>Our Team</a>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Press kit</a>
+                    <a className={`link link-hover ${hoverColor} ${subText}`}>Press Kit</a>
                 </nav>
 
-                {/* 4️⃣ Legal */}
+                {/* 4 Legal */}
                 <nav className="flex flex-col items-center sm:items-start space-y-2">
-                    <h6 className="footer-title font-semibold text-base">Legal</h6>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Terms of use</a>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Privacy policy</a>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Cookie policy</a>
+                    <h6 className="font-semibold text-base sm:text-lg mb-2">Legal</h6>
+                    <a className={`link link-hover ${hoverColor} ${subText}`}>Terms of Use</a>
+                    <a className={`link link-hover ${hoverColor} ${subText}`}>Privacy Policy</a>
+                    <a className={`link link-hover ${hoverColor} ${subText}`}>Cookie Policy</a>
                     <a className={`link link-hover ${hoverColor} ${subText}`}>Accessibility</a>
                 </nav>
             </div>
 
-            {/* Copyright section */}
+            {/*  Copyright Section */}
             <div
-                className={`mt-10 pt-4 pl-10 md:pl-25 lg:pl-120  text-sm ${borderTop} ${subText} w-full`}
+                className={`mt-10 pt-5 border-t ${borderTop} text-center text-sm sm:text-base ${subText}`}
             >
-                © {new Date().getFullYear()} LoanLink. All rights reserved.
+                © {new Date().getFullYear()} <span className="font-semibold">LoanLink</span>. All rights reserved.
             </div>
         </footer>
     );

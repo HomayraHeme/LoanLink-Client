@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "loanlink-49d90"
-  }
+    "default": "loanlink-49d90",
+    "prod": "loanlink-49d90"
+  },
+  "targets": {},
+  "etags": {}
 }

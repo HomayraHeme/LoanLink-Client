@@ -3,16 +3,20 @@ import { useParams, useNavigate, Link } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../Hooks/useAxios';
 import { useTheme } from '../Theme/ThemeContext';
-import useAuth from '../Hooks/useAuth';
 import { motion } from 'framer-motion';
+import useRole from '../Hooks/useRole';
 
 const ViewDetails = () => {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
-    const { user } = useAuth();
     const axios = useAxios();
     const navigate = useNavigate();
     const { id } = useParams();
+    const { role } = useRole();
+    const canApply = role && !['admin', 'manager'].includes(role.toLowerCase());
+
+
+
 
     const { data: loan, isLoading, isError } = useQuery({
         queryKey: ['loan', id],
@@ -32,7 +36,6 @@ const ViewDetails = () => {
     const labelColor = isDark ? 'text-gray-400' : 'text-gray-600';
     const borderColor = isDark ? 'border-gray-700' : 'border-gray-200';
 
-    const canApply = user && !['Admin', 'Manager'].includes(user.role);
 
     return (
         <div className={`${bgColor} min-h-screen py-16 px-6 md:px-20`}>
@@ -99,15 +102,26 @@ const ViewDetails = () => {
                             </ul>
                         </motion.div>
 
-                        <motion.button
-                            whileHover={{ scale: canApply ? 1.05 : 1 }}
-                            whileTap={{ scale: canApply ? 0.95 : 1 }}
-                            className='btn-primary'
-                            disabled={!canApply}
-                            onClick={() => canApply && navigate(`/apply-loan/${loan._id}`)}
-                        >
-                            <Link to={`/apply-loan/${loan._id}`}> Apply Now</Link>
-                        </motion.button>
+                        <motion.div className="mt-6">
+                            {canApply ? (
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="btn-primary"
+                                    onClick={() => navigate(`/apply-loan/${loan._id}`)}
+                                >
+                                    Apply Now
+                                </motion.button>
+                            ) : (
+                                <button
+                                    disabled
+                                    className="btn-primary opacity-60 cursor-not-allowed"
+                                >
+                                    Not eligible to apply
+                                </button>
+                            )}
+                        </motion.div>
+
                     </div>
                 </div>
 

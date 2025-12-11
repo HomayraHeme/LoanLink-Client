@@ -90,7 +90,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'profile',
-                element: <BorrowerRoute><ProfilePage></ProfilePage></BorrowerRoute>
+                element: <ProfilePage></ProfilePage>
             },
             {
                 path: 'manage-users',
@@ -122,7 +122,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'profile',
-                element: <ManagerRoute><ProfilePage></ProfilePage></ManagerRoute>
+                element: <ProfilePage></ProfilePage>
             },
 
         ]

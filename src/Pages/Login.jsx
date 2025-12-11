@@ -1,9 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router';
 import useAuth from '../Hooks/useAuth';
 import SocialLogin from './SocialLogin';
 import { useTheme } from '../Theme/ThemeContext';
+import Swal from 'sweetalert2';
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -14,8 +15,17 @@ const Login = () => {
     const isDark = theme === 'dark';
 
     const handleLogin = (data) => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Login Successful',
+            text: 'Welcome back to LoanLink!',
+            timer: 2000,
+            showConfirmButton: false
+
+        });
+        navigate(location.state || '/');
         signInUser(data.email, data.password)
-            .then(result => navigate(location?.state || '/'))
+
             .catch(error => console.error(error));
     }
 

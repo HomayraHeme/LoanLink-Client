@@ -7,6 +7,7 @@ import useAuth from '../Hooks/useAuth';
 import { useNavigate } from 'react-router';
 import { useTheme } from '../Theme/ThemeContext';
 import { motion } from 'framer-motion';
+import Swal from 'sweetalert2';
 
 const LoanApplicationForm = () => {
     const { theme } = useTheme();
@@ -29,7 +30,13 @@ const LoanApplicationForm = () => {
 
     const onSubmit = async (data) => {
         if (!user || !loan) {
-            alert('User or loan details are missing. Cannot submit application.');
+            Swal.fire({
+                title: 'error!',
+                text: 'User or loan data is missing.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+            ('');
             return;
         }
 
@@ -44,7 +51,12 @@ const LoanApplicationForm = () => {
                 loan_category: loan.loan_category
             };
             await axios.post('/loan-applications', payload);
-            alert('Application submitted successfully! Redirecting to My Loans.');
+            Swal.fire({
+                title: 'Success!',
+                text: 'Your loan application was submitted successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
             navigate('/dashboard/my-loans');
         } catch (error) {
             console.error(error);

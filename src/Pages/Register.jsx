@@ -18,22 +18,22 @@ const Register = () => {
     const isDark = theme === 'dark';
 
     const handleRegistration = (data) => {
-        console.log("🟢 Form Data Submitted:", data);
+        console.log(" Form Data Submitted:", data);
         const profileImg = data.photo[0];
 
         registerUser(data.email, data.password)
             .then(() => {
-                console.log("✅ Firebase user created successfully");
+                console.log(" Firebase user created successfully");
 
                 const formData = new FormData();
                 formData.append('image', profileImg);
                 const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`;
 
-                // 🟡 Upload image
+                // Upload image
                 axios.post(image_API_URL, formData)
                     .then(res => {
                         const photoURL = res.data.data.url;
-                        console.log("🖼️ Uploaded photo URL:", photoURL);
+                        console.log(" Uploaded photo URL:", photoURL);
 
                         const userInfo = {
                             email: data.email,
@@ -42,7 +42,7 @@ const Register = () => {
                             role: data.role
                         };
 
-                        console.log("📤 Sending user info to backend:", userInfo);
+                        console.log("Sending user info to backend:", userInfo);
 
 
                         axiosSecure.post('/users', userInfo)
@@ -62,7 +62,7 @@ const Register = () => {
                         const userProfile = { displayName: data.name, photoURL };
                         updateUserProfile(userProfile)
                             .then(() => {
-                                console.log("✅ Firebase profile updated successfully");
+                                console.log(" Firebase profile updated successfully");
 
                                 Swal.fire({
                                     icon: 'success',
