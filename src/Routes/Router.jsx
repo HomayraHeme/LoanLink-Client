@@ -17,7 +17,6 @@ import ProfilePage from "../Pages/Dashboard/ProfilePage.jsx";
 import ManageUsers from "../Pages/Dashboard/ManageUsers.jsx";
 import ManageAllLoans from "../Pages/Dashboard/ManageAllLoans.jsx";
 import ManageLoanApplications from "../Pages/Dashboard/ManageLoanApplication.jsx";
-import AddLoan from "../Pages/Dashboard/AddLoans";
 import AddLoans from "../Pages/Dashboard/AddLoans";
 import ManageLoans from "../Pages/Dashboard/ManageLoans.jsx";
 import PendingLoans from "../Pages/Dashboard/PendingLoans.jsx";
@@ -25,6 +24,7 @@ import ApprovedLoans from "../Pages/Dashboard/ApprovedLoans.jsx";
 import AdminRoute from "./AdminRoute.jsx";
 import ManagerRoute from "./ManagerRoute.jsx";
 import BorrowerRoute from "./BorrowerRoute.jsx";
+import PaymentCancel from "../Pages/Dashboard/PaymentCancel.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -86,7 +86,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'payment-success',
-                Component: <BorrowerRoute><PaymentSuccess></PaymentSuccess></BorrowerRoute>
+                element: <PaymentSuccess></PaymentSuccess>
+            },
+            {
+                path: 'payment-cancelled',
+                Component: PaymentCancel,
             },
             {
                 path: 'profile',
