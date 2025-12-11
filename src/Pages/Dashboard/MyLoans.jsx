@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query"; // ✅ TanStack Query এখানেই আছে
+// import React, { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { FaEye, FaTimes, FaMoneyCheckAlt } from "react-icons/fa";
 import { useTheme } from "../../Theme/ThemeContext";
 import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
-import { useLocation, useNavigate } from "react-router";
+// import { useLocation, useNavigate } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSeceure";
 
 const MyLoans = () => {
@@ -13,10 +13,9 @@ const MyLoans = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
-    const navigate = useNavigate();
-    const location = useLocation();
+    // const navigate = useNavigate();
+    // const location = useLocation();
 
-    // --- Fetch user's loans (TanStack Query) ---
     const { data: myLoans = [], isLoading, isError, refetch } = useQuery({
         queryKey: ["myLoans", user?.email],
         enabled: !!user?.email && !!axiosSecure,
@@ -26,37 +25,34 @@ const MyLoans = () => {
         },
     });
 
-    // --- Payment Success Handling ---
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const isSuccess = params.get('success');
-        const sessionId = params.get('session_id');
+    // useEffect(() => {
+    //     const params = new URLSearchParams(location.search);
+    //     const isSuccess = params.get('success');
+    //     const sessionId = params.get('session_id');
 
-        if (isSuccess === 'true' && sessionId) {
+    //     if (isSuccess === 'true' && sessionId) {
 
-            // সার্ভারে PATCH রিকোয়েস্ট (ক্লায়েন্ট-সাইড ফিলাপ লজিক)
-            axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
-                .then(res => {
-                    console.log('Payment success update response:', res.data);
+    //         axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
+    //             .then(res => {
+    //                 console.log('Payment success update response:', res.data);
 
-                    if (res.data.modifiedCount > 0) {
-                        Swal.fire("Success!", "Your payment was successful and application updated.", "success");
-                        refetch(); // ডেটা রিফ্রেশ করুন
-                    } else if (res.data.success === false) {
-                        Swal.fire("Error", "Payment confirmed but database update failed.", "error");
-                    }
+    //                 if (res.data.modifiedCount > 0) {
+    //                     Swal.fire("Success!", "Your payment was successful and application updated.", "success");
+    //                     refetch();
+    //                 } else if (res.data.success === false) {
+    //                     Swal.fire("Error", "Payment confirmed but database update failed.", "error");
+    //                 }
 
-                    // URL থেকে প্যারামিটারগুলো সরিয়ে দিন এবং Clean Redirect
-                    navigate(location.pathname, { replace: true });
+    //                 navigate(location.pathname, { replace: true });
 
-                })
-                .catch(err => {
-                    console.error("Error during payment success update:", err);
-                    Swal.fire("Error", "Failed to finalize payment and update loan status.", "error");
-                    navigate(location.pathname, { replace: true });
-                });
-        }
-    }, [location.search, navigate, axiosSecure, refetch]); // refetch added to dependency array
+    //             })
+    //             .catch(err => {
+    //                 console.error("Error during payment success update:", err);
+    //                 Swal.fire("Error", "Failed to finalize payment and update loan status.", "error");
+    //                 navigate(location.pathname, { replace: true });
+    //             });
+    //     }
+    // }, [location.search, navigate, axiosSecure, refetch]); // refetch added to dependency array
 
     // --- Delete loan ---
     const handleDelete = async (id) => {
@@ -93,13 +89,11 @@ const MyLoans = () => {
             });
 
             if (confirm.isConfirmed) {
-                // Create Stripe session
                 const { data } = await axiosSecure.post('/create-payment-session', {
                     userEmail: user.email,
                     loanId: loan._id,
                 });
 
-                // Redirect to Stripe checkout
                 window.location.href = data.url;
             }
         } catch (error) {
@@ -139,7 +133,7 @@ const MyLoans = () => {
                         ) : (
                             myLoans.map((loan) => (
                                 <tr key={loan._id} className={`border-b ${isDark ? "border-gray-700" : "border-gray-200"}`}>
-                                    {/* ✅ Added title attribute for full ID visibility on hover */}
+
                                     <td className="py-3 px-4 truncate max-w-[100px]" title={loan._id}>{loan._id}</td>
                                     <td className="py-3 px-4">{loan.loanTitle || loan.loanType}</td>
                                     <td className="py-3 px-4">${loan.loanAmount?.toLocaleString()}</td>
@@ -156,7 +150,7 @@ const MyLoans = () => {
                                         </span>
                                     </td>
                                     <td className="py-3 px-4 flex gap-3 items-center justify-center">
-                                        {/* View Loan Info */}
+
                                         <button
                                             onClick={() =>
                                                 Swal.fire({

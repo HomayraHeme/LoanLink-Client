@@ -22,7 +22,6 @@ const ProfilePage = () => {
                 const res = await axiosSecure.get(`/users/${user.email}`);
                 const userData = res.data;
 
-                // Ensure role and status are always set
                 setProfileUser({
                     name: userData.name || user.displayName || "Unknown",
                     email: userData.email || user.email,
@@ -33,7 +32,6 @@ const ProfilePage = () => {
             } catch (err) {
                 console.error("Fetch User Error:", err);
 
-                // fallback to default if user not found
                 setProfileUser({
                     email: user.email,
                     name: user.displayName || "Unknown",
