@@ -81,10 +81,10 @@ const CustomerFeedback = () => {
                     centeredSlides={true}
                     slidesPerView={3}
                     coverflowEffect={{
-                        rotate: 15,       // subtle rotation for elegance
-                        stretch: 0,       // no extra stretch, keeps it clean
-                        depth: 100,       // decent depth for 3D feel
-                        modifier: 1,      // moderate effect strength
+                        rotate: 15,       
+                        stretch: 0,        
+                        depth: 100,        
+                        modifier: 1,       
                         scale: 0.85,
                         slideShadows: true,
                     }}

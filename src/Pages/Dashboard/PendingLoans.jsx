@@ -186,7 +186,7 @@ const PendingLoans = () => {
                                 <td className="px-4 py-3">
                                     <p className="text-sm text-gray-500">{loan.userEmail}</p>
                                 </td>
-                                <td className="px-4 py-3 text-right">${loan.amount?.toLocaleString('en-US') || 'N/A'}</td>
+                                <td className="px-4 py-3 text-right">${loan.loanAmount?.toLocaleString('en-US') || 'N/A'}</td>
                                 <td className="px-4 py-3">{formatDate(loan.appliedAt)}</td>
                                 <td className="px-4 py-3 flex gap-2 justify-center">
 
