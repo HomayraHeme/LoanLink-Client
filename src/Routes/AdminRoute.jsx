@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate, useLocation } from 'react-router';
 import useAuth from '../Hooks/useAuth';
 import useRole from '../Hooks/useRole';
+import Loading from '../Pages/Loading';
 
 
 
@@ -11,7 +12,7 @@ const AdminRoute = ({ children }) => {
     const location = useLocation();
 
     if (loading || roleLoading) {
-        return <div className="text-center mt-10 text-lg">Loading...</div>;
+        return <div className="text-center mt-10 text-lg"><Loading></Loading></div>;
     }
 
     if (!user) {

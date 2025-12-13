@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosSecure from '../../Hooks/useAxiosSeceure';
 import { useTheme } from '../../Theme/ThemeContext';
+import Loading from '../Loading';
 
 const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-GB', {
@@ -158,7 +159,7 @@ const PendingLoans = () => {
     const tableBg = isDark ? "bg-gray-800 text-gray-200" : "bg-white text-gray-800";
     const headerBg = isDark ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-800";
 
-    if (isLoading) return <p className="text-center py-10 text-xl">Loading pending applications...</p>;
+    if (isLoading) return <p className="text-center py-10 text-xl"><Loading></Loading></p>;
     if (isError) return <p className="text-center py-10 text-red-600">Error loading data.</p>;
     if (pendingApplications.length === 0) return <p className="text-center py-10 text-xl">✅ No pending loan applications found.</p>;
 

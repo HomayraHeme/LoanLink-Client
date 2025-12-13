@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSeceure";
 import { useTheme } from "../../Theme/ThemeContext";
+import Loading from "../Loading";
 
 const ManageUsers = () => {
     const axiosSecure = useAxiosSecure();
@@ -126,7 +127,7 @@ const ManageUsers = () => {
 
     // --- Render ---
     if (isLoading)
-        return <p className="text-center py-10 text-xl">Loading users...</p>;
+        return <p className="text-center py-10 text-xl"><Loading></Loading></p>;
 
     return (
         <div

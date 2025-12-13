@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
 // import { useLocation, useNavigate } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSeceure";
+import Loading from "../Loading";
 
 const MyLoans = () => {
     const { theme } = useTheme();
@@ -25,36 +26,7 @@ const MyLoans = () => {
         },
     });
 
-    // useEffect(() => {
-    //     const params = new URLSearchParams(location.search);
-    //     const isSuccess = params.get('success');
-    //     const sessionId = params.get('session_id');
-
-    //     if (isSuccess === 'true' && sessionId) {
-
-    //         axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
-    //             .then(res => {
-    //                 console.log('Payment success update response:', res.data);
-
-    //                 if (res.data.modifiedCount > 0) {
-    //                     Swal.fire("Success!", "Your payment was successful and application updated.", "success");
-    //                     refetch();
-    //                 } else if (res.data.success === false) {
-    //                     Swal.fire("Error", "Payment confirmed but database update failed.", "error");
-    //                 }
-
-    //                 navigate(location.pathname, { replace: true });
-
-    //             })
-    //             .catch(err => {
-    //                 console.error("Error during payment success update:", err);
-    //                 Swal.fire("Error", "Failed to finalize payment and update loan status.", "error");
-    //                 navigate(location.pathname, { replace: true });
-    //             });
-    //     }
-    // }, [location.search, navigate, axiosSecure, refetch]); // refetch added to dependency array
-
-    // --- Delete loan ---
+    
     const handleDelete = async (id) => {
         try {
             const confirm = await Swal.fire({
@@ -105,7 +77,7 @@ const MyLoans = () => {
     const bgColor = isDark ? "bg-gray-900" : "bg-green-100";
     const headingColor = isDark ? "text-emerald-300" : "text-emerald-800";
 
-    if (isLoading) return <p className="text-center py-10">Loading your loans...</p>;
+    if (isLoading) return <p className="text-center py-10"><Loading></Loading></p>;
     if (isError) return <p className="text-center py-10 text-red-500">Error loading loans.</p>;
 
     return (

@@ -25,6 +25,7 @@ import AdminRoute from "./AdminRoute.jsx";
 import ManagerRoute from "./ManagerRoute.jsx";
 import BorrowerRoute from "./BorrowerRoute.jsx";
 import PaymentCancel from "../Pages/Dashboard/PaymentCancel.jsx";
+import ErrorPage from "../Pages/ErrorPage.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
                         <PrivateRoute>
                             <LoanApplicationForm></LoanApplicationForm>
                         </PrivateRoute>
+                },
+                {
+                    path: '/*',
+                     Component: ErrorPage
                 }
             ]
     },
@@ -128,6 +133,14 @@ export const router = createBrowserRouter([
                 path: 'profile',
                 element: <ProfilePage></ProfilePage>
             },
+            {
+                path: '*',
+                 Component: ErrorPage
+            }
+            
+             
+
+              
 
         ]
     }

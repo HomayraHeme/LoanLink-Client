@@ -1,6 +1,7 @@
 import React from 'react';
 import useAuth from '../Hooks/useAuth';
 import useRole from '../Hooks/useRole';
+import Loading from '../Pages/Loading';
 
 const ManagerRoute = ({ children }) => {
     const { loading, user } = useAuth();
@@ -8,7 +9,7 @@ const ManagerRoute = ({ children }) => {
 
 
     if (loading || !user || roleLoading) {
-        return <div className="text-center mt-10 text-lg">Loading...</div>;
+        return <div className="text-center mt-10 text-lg"><Loading></Loading></div>;
     }
 
 

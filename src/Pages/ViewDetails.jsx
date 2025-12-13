@@ -5,6 +5,7 @@ import useAxios from '../Hooks/useAxios';
 import { useTheme } from '../Theme/ThemeContext';
 import { motion } from 'framer-motion';
 import useRole from '../Hooks/useRole';
+import Loading from './Loading';
 
 const ViewDetails = () => {
     const { theme } = useTheme();
@@ -26,7 +27,7 @@ const ViewDetails = () => {
         },
     });
 
-    if (isLoading) return <p className="text-center py-20 text-xl">Loading loan details...</p>;
+    if (isLoading) return <p className="text-center py-20 text-xl"><Loading></Loading></p>;
     if (isError || !loan) return <p className="text-center py-20 text-xl">Error fetching loan details.</p>;
 
     const bgColor = isDark ? 'bg-gray-900' : 'bg-gray-50';

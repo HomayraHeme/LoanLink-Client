@@ -1,10 +1,10 @@
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router';
-import logoImg from '../../assets/loanlogo-removebg-preview.png';
 import { useTheme } from '../../Theme/ThemeContext';
 import useAuth from '../../Hooks/useAuth';
 import Logo from './Logo';
 import Swal from 'sweetalert2';
+import { FaMoon, FaSun } from 'react-icons/fa';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -104,7 +104,7 @@ const Navbar = () => {
                                         </button>
                                         <button
                                             title={user.name || 'Profile'}
-                                            onClick={() => navigate('/profile')}
+                                            
                                             type="button"
                                             className="ml-1"
                                         >
@@ -121,7 +121,8 @@ const Navbar = () => {
                                     type="button"
                                     title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                                 >
-                                    {theme === 'dark' ? '☀️' : '🌙'}
+                                    {theme === 'dark' ? <FaSun></FaSun> :  <FaMoon />
+}
                                 </button>
                             </div>
 
@@ -191,10 +192,7 @@ const Navbar = () => {
                                         </button>
 
                                         <button
-                                            onClick={() => {
-                                                navigate('/profile');
-                                                setOpen(false);
-                                            }}
+                                            
                                             className="text-left px-3 py-2 rounded-md hover:bg-emerald-800/40 flex items-center gap-2 transition-colors"
                                             type="button"
                                         >

@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSeceure";
 import { useTheme } from "../../Theme/ThemeContext";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import Loading from "../Loading";
 
 const ManageAllLoans = () => {
     const axiosSecure = useAxiosSecure();
@@ -139,7 +140,7 @@ const ManageAllLoans = () => {
     const tableBg = isDark ? "bg-gray-800 text-gray-200" : "bg-white text-gray-800";
     const headerBg = isDark ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-800";
 
-    if (isLoading) return <p className="text-center py-10">Loading loans...</p>;
+    if (isLoading) return <p className="text-center py-10"><Loading></Loading></p>;
 
     return (
         <div className={`${bg} min-h-screen p-6`}>

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSeceure";
 import { useTheme } from "../../Theme/ThemeContext";
 import Swal from "sweetalert2";
+import Loading from "../Loading";
 
 const ManageLoanApplications = () => {
     const axiosSecure = useAxiosSecure();
@@ -52,7 +53,7 @@ const ManageLoanApplications = () => {
     const tableBg = isDark ? "bg-gray-800 text-gray-200" : "bg-white text-gray-800";
     const headerBg = isDark ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-800";
 
-    if (isLoading) return <p className="text-center py-10">Loading applications...</p>;
+    if (isLoading) return <p className="text-center py-10"><Loading></Loading></p>;
     if (isError) return <p className="text-center py-10 text-red-600">Error loading applications.</p>;
 
     return (

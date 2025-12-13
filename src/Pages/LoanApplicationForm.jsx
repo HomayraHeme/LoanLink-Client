@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import { useTheme } from '../Theme/ThemeContext';
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
+import Loading from './Loading';
 
 const LoanApplicationForm = () => {
     const { theme } = useTheme();
@@ -64,7 +65,7 @@ const LoanApplicationForm = () => {
         }
     };
 
-    if (isLoading) return <p className="text-center py-20 text-xl">Loading loan details...</p>;
+    if (isLoading) return <p className="text-center py-20 text-xl"><Loading></Loading></p>;
     if (isError || !loan) return <p className="text-center py-20 text-xl">Error fetching loan details.</p>;
 
     // --- Styling for Dark Mode ---

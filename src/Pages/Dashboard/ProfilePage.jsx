@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { useTheme } from "../../Theme/ThemeContext";
 import useAxiosSecure from "../../Hooks/useAxiosSeceure";
 import useAuth from "../../Hooks/useAuth";
+import Loading from "../Loading";
 
 const ProfilePage = () => {
     const { theme } = useTheme();
@@ -69,7 +70,7 @@ const ProfilePage = () => {
     };
 
     if (!user) return navigate("/login");
-    if (!profileUser) return <p className="text-center py-10">Loading profile...</p>;
+    if (!profileUser) return <p className="text-center py-10"><Loading></Loading></p>;
 
     const bgColor = isDark ? "bg-gray-900" : "bg-green-100";
     const cardBg = isDark ? "bg-gray-800" : "bg-white";

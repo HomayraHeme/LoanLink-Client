@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import useAxios from '../Hooks/useAxios';
 import { useTheme } from '../Theme/ThemeContext';
 import { Link } from 'react-router';
+import Loading from './Loading';
 
 const AllLoans = () => {
     const { theme } = useTheme();
@@ -36,7 +37,7 @@ const AllLoans = () => {
         currentPage * itemsPerPage
     );
 
-    if (isLoading) return <p className="text-center py-10">Loading loans...</p>;
+    if (isLoading) return <p className="text-center py-10"><Loading></Loading></p>;
     if (isError) return <p className="text-center py-10">Error fetching loans.</p>;
 
     const bgColor = isDark ? 'bg-gray-900' : 'bg-green-100';
