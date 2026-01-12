@@ -222,7 +222,7 @@ const AboutUs = () => {
                         to guide you — with speed, transparency, and trust.
                     </motion.p>
                     <motion.div variants={fadeUp} custom={2}>
-                        <Link to="/login">
+                        <Link to="/all-loans">
                             <button className="btn-primary transition-transform hover:scale-105">
                                 Get Started
                             </button>

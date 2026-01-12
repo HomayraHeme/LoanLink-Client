@@ -74,19 +74,19 @@ const ContactUs = () => {
                 <div className="p-3 rounded-full bg-emerald-600 text-white">
                   <FaEnvelope />
                 </div>
-                <p>support@loanlink.com</p>
+                <p>heme5674@gmail.com</p>
               </div>
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-full bg-emerald-600 text-white">
                   <FaPhoneAlt />
                 </div>
-                <p>+880 1700-123456</p>
+                <p>+880 1878654211</p>
               </div>
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-full bg-emerald-600 text-white">
                   <FaMapMarkerAlt />
                 </div>
-                <p>123 Green Street, Dhaka, Bangladesh</p>
+                <p>512/1,Baganbari,Malibagh, Dhaka, Bangladesh</p>
               </div>
             </motion.div>
 

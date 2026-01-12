@@ -18,3 +18,15 @@
  [data-theme="dark"] .btn-secondary {
    @apply border-gray-400 text-gray-200 hover:bg-gray-600;
  }
+
+ /* Light theme selected option */
+.select-light option:checked {
+  background-color: #34d399; /* emerald-400 */
+  color: #065f46; /* emerald-800 */
+}
+
+/* Dark theme selected option */
+.select-dark option:checked {
+  background-color: #065f46; /* emerald-800 */
+  color: #d1fae5; /* emerald-200 */
+}

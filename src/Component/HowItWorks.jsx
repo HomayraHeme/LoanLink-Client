@@ -30,7 +30,7 @@ const HowItWorks = () => {
     ];
 
     return (
-        <section className={`${bgColor} py-16 w-11/12 mx-auto`}>
+        <section className={`${bgColor} py-16 max-w-7x mx-auto lg:px-8`}>
             <div className="max-w-7xl mx-auto px-4 text-center">
                 <h2 className={`text-4xl sm:text-4xl font-black mb-12 ${headingColor}`}>
                     How It Works

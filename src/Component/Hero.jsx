@@ -17,7 +17,7 @@ const Hero = () => {
     const sectionBg = isDark ? 'bg-gray-900' : 'bg-transparent';
 
     return (
-        <section className={`w-11/12 mx-auto py-10 sm:py-15 overflow-hidden ${sectionBg} transition-colors duration-500`}>
+        <section className={`max-w-7x mx-auto lg:px-8 py-10 sm:py-10 overflow-hidden ${sectionBg} transition-colors duration-500`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="lg:grid lg:grid-cols-12 lg:gap-5 items-center">
 

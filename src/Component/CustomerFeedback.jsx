@@ -69,8 +69,8 @@ const CustomerFeedback = () => {
 
 
     return (
-        <section className={`${bgColor} pb-16`}>
-            <div className="max-w-4xl mx-auto px-4 text-center">
+        <section className={`${bgColor} py-16`}>
+            <div className="max-w-7x lg:px-10 mx-auto px-4 text-center">
                 <h2 className={`text-4xl sm:text-4xl font-black mb-12 ${headingColor}`}>
                     Customer Feedback
                 </h2>

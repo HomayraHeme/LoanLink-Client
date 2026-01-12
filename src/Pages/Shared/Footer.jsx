@@ -2,6 +2,7 @@ import React from "react";
 import logoImg from "../../assets/loanlogo-removebg-preview.png";
 import { useTheme } from "../../Theme/ThemeContext";
 import Logo from "./Logo";
+import { NavLink } from "react-router";
 
 const Footer = () => {
     const { theme } = useTheme();
@@ -42,27 +43,27 @@ const Footer = () => {
                     <h6 className="font-semibold text-base sm:text-lg mb-2">Services</h6>
                     <a className={`link link-hover ${hoverColor} ${subText}`}>Loan Application</a>
                     <a className={`link link-hover ${hoverColor} ${subText}`}>Credit Check</a>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Financial Advice</a>
+                    <a className={`link link-hover ${hoverColor} ${subText}`}>Financial Tips</a>
                     <a className={`link link-hover ${hoverColor} ${subText}`}>Investment Plans</a>
                 </nav>
 
-                {/* 3 Company */}
-                <nav className="flex flex-col items-center sm:items-start space-y-2">
-                    <h6 className="font-semibold text-base sm:text-lg mb-2">Company</h6>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>About Us</a>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Careers</a>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Our Team</a>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Press Kit</a>
-                </nav>
+                {/* 3 Contact */}
+<nav className="flex flex-col items-center sm:items-start space-y-2">
+  <h6 className="font-semibold text-base sm:text-lg mb-2">Contact</h6>
+  <p className={`${subText}`}>📞 +880 1878654211</p>
+  <p className={`${subText}`}>✉️ heme5674@gmail.com</p>
+  <p className={`${subText}`}>🏢 Dhaka, Bangladesh</p>
+ </nav>
+
 
                 {/* 4 Legal */}
                 <nav className="flex flex-col items-center sm:items-start space-y-2">
-                    <h6 className="font-semibold text-base sm:text-lg mb-2">Legal</h6>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Terms of Use</a>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Privacy Policy</a>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Cookie Policy</a>
-                    <a className={`link link-hover ${hoverColor} ${subText}`}>Accessibility</a>
-                </nav>
+  <h6 className="font-semibold text-base sm:text-lg mb-2">Quick Links</h6>
+  <NavLink to="/" className={`link link-hover ${hoverColor} ${subText}`}>Home</NavLink>
+  <NavLink to="/all-loans" className={`link link-hover ${hoverColor} ${subText}`}>All Loans</NavLink>
+  <NavLink to="/about" className={`link link-hover ${hoverColor} ${subText}`}>About Us</NavLink>
+  <NavLink to="/contact" className={`link link-hover ${hoverColor} ${subText}`}>Contact</NavLink>
+</nav>
             </div>
 
             {/*  Copyright Section */}

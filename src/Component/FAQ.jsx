@@ -23,9 +23,9 @@ const FAQ = () => {
 
 
     return (
-        <section className={`${sectionBg} w-11/12 mx-auto pb-16 px-4`}>
+        <section className={`${sectionBg} max-w-7x lg:px-10 mx-auto py-16 px-4`}>
             <h2 className={`text-4xl font-black mb-10 text-center ${headingColor}`}>Frequently Asked Questions</h2>
-            <div className="max-w-3xl mx-auto space-y-4">
+            <div className="max-w-7xl mx-auto space-y-4">
                 {faqs.map((faq, idx) => (
                     <div
                         key={idx}

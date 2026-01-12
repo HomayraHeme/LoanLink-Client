@@ -20,7 +20,7 @@ const OurServices = () => {
 
 
     return (
-        <section className={`${bgColor} w-11/12 mx-auto py-16 px-4`}>
+        <section className={`${bgColor} max-w-7x mx-auto lg:px-10 py-10 px-4`}>
             <h2 className={`text-4xl font-black mb-10 text-center ${headingColor}`}>Our Services</h2>
             <div className="max-w-7xl mx-auto grid sm:grid-cols-2 md:grid-cols-4 gap-8">
                 {services.map((service, idx) => (

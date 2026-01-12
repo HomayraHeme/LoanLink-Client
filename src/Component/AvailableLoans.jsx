@@ -25,7 +25,7 @@ const AvailableLoans = () => {
 
     if (loans.length === 0)
         return <p className="text-center mt-10 text-gray-500">No loans available at the moment.</p>;
-    const displayedLoans = loans.slice(0, 6);
+    const displayedLoans = loans.slice(0, 8);
 
     return (
         <div>
@@ -35,7 +35,7 @@ const AvailableLoans = () => {
                 </h3>
             </div>
             <div
-                className={`w-11/12 grid sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-7xl mx-auto py-10 px-4 ${isDark
+                className={`max-w-7x lg:px-10  grid sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-7xl mx-auto py-10 px-4 ${isDark
                     ? "bg-gray-900 text-white"
                     : "bg-green-100 text-gray-900"
                     }`}

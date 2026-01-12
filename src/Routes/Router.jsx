@@ -26,6 +26,7 @@ import ManagerRoute from "./ManagerRoute.jsx";
 import BorrowerRoute from "./BorrowerRoute.jsx";
 import PaymentCancel from "../Pages/Dashboard/PaymentCancel.jsx";
 import ErrorPage from "../Pages/ErrorPage.jsx";
+import Dashboard from "../Pages/Dashboard/DashboardHome/Overview.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -60,10 +61,14 @@ export const router = createBrowserRouter([
                 {
                     path: '/view-details/:id',
                     element:
-                        <PrivateRoute>
+                        
                             <ViewDetails></ViewDetails>
-                        </PrivateRoute>
+                        
 
+                },
+                {
+                    path: '/profile',
+                    element: <PrivateRoute><ProfilePage></ProfilePage></PrivateRoute>
                 },
                 {
                     path: '/apply-loan/:id',
@@ -84,6 +89,10 @@ export const router = createBrowserRouter([
         path: '/dashboard',
         element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
         children: [
+            {
+                index: true,
+                element: <Dashboard></Dashboard>
+            },
             {
                 path: 'my-loans',
                 element: <BorrowerRoute><MyLoans></MyLoans></BorrowerRoute>

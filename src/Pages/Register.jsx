@@ -154,7 +154,7 @@ const Register = () => {
                         {errors.password?.type === 'pattern' && <p className='text-red-500'>Password must include uppercase, lowercase, number, and special character</p>}
                     </div>
 
-                    <button type="submit" className={`w-full py-3 rounded-md font-semibold ${btnColor} mt-2`}>
+                    <button type="submit" className={`w-full py-3 rounded-md font-semibold btn-primary mt-2`}>
                         Register
                     </button>
                 </form>

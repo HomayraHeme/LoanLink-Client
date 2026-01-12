@@ -1,13 +1,13 @@
-import React from 'react';
+ import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../Hooks/useAuth';
 import SocialLogin from './SocialLogin';
 import { useTheme } from '../Theme/ThemeContext';
 import Swal from 'sweetalert2';
 
 const Login = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const { signInUser } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
@@ -15,19 +15,50 @@ const Login = () => {
     const isDark = theme === 'dark';
 
     const handleLogin = (data) => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Login Successful',
-            text: 'Welcome back to LoanLink!',
-            timer: 2000,
-            showConfirmButton: false
-
-        });
-        navigate(location.state || '/');
         signInUser(data.email, data.password)
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Successful',
+                    text: 'Welcome back to LoanLink!',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                navigate(location.state || '/');
+            })
+            .catch(error => {
+                console.error(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: 'Invalid credentials. Please try again.',
+                });
+            });
+    };
 
-            .catch(error => console.error(error));
-    }
+    // --- Demo Login Function ---
+    const handleDemoLogin = (role) => {
+        let email = '';
+        let password = '';
+
+        if (role === 'admin') {
+            email = 'admin@example.com';
+            password = '123456Aa$';
+        } else if (role === 'manager') {
+            email = 'manager@example.com';
+            password = '123456Mm$';
+        } else if (role === 'user') {
+            email = 'user@example.com';
+            password = '123456Bb$';
+        }
+
+        // Auto-fill the credentials
+        setValue('email', email);
+        setValue('password', password);
+
+        // Automatically log in
+        handleLogin({ email, password });
+    };
 
     const bgColor = isDark ? 'bg-gray-900' : 'bg-green-100';
     const cardBg = isDark ? 'bg-gray-800' : 'bg-white';
@@ -70,10 +101,35 @@ const Login = () => {
                         <a href="#" className={`text-sm hover:underline ${linkColor}`}>Forgot password?</a>
                     </div>
 
-                    <button type="submit" className={`w-full py-3 rounded-md font-semibold ${btnColor} mt-2`}>
+                    <button type="submit" className={`w-full py-3 rounded-md font-semibold btn-primary mt-2`}>
                         Login
                     </button>
                 </form>
+
+                {/* --- Demo Login Buttons --- */}
+                <div className="mt-6">
+                    <p className={`text-center font-medium mb-2 ${textColor}`}>Demo Logins</p>
+                    <div className="flex flex-col gap-2">
+                        <button
+                            onClick={() => handleDemoLogin('admin')}
+                            className="w-full py-2 rounded-md bg-emerald-800 hover:bg-emerald-700 text-white font-semibold"
+                        >
+                            Demo Admin Login
+                        </button>
+                        <button
+                            onClick={() => handleDemoLogin('manager')}
+                            className="w-full py-2 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white font-semibold"
+                        >
+                            Demo Manager Login
+                        </button>
+                        <button
+                            onClick={() => handleDemoLogin('user')}
+                            className="w-full py-2 rounded-md bg-emerald-500 hover:bg-emerald-700 text-white font-semibold"
+                        >
+                            Demo User Login
+                        </button>
+                    </div>
+                </div>
 
                 <p className={`text-center mt-4 ${textColor}`}>
                     New to LoanLink? <Link state={location.state} className={`underline ${linkColor}`} to="/register">Register</Link>
