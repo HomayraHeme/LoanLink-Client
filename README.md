@@ -1,16 +1,56 @@
-# React + Vite
+ # LoanLink – Microloan Request & Approval Tracker System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Site:** https://loanlink-49d90.web.app/
+ 
+---
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+LoanLink is a **web-based microloan request, review & approval tracker system** designed for small financial organizations, NGOs, and microloan providers. It streamlines loan applications, verification, approvals, EMI schedules, and repayments in one platform.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+1. **Role-Based System**  
+   - Admin, Manager (Loan Officer), Borrower roles with access control.  
+   - Admin can manage users, loans, and loan applications.  
+   - Manager can add/manage loans and process applications.  
+   - Borrower can apply for loans and view their applications.  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+2. **Borrower Features**  
+   - Apply for microloans with auto-filled email & personal info.  
+   - View, cancel pending loans, and pay application fees via Stripe.  
+   - Access personal profile and manage loan status.  
+
+3. **Loan Management**  
+   - Admin/Manager can add, update, delete loans.  
+   - Control which loans appear on the Home page.  
+   - EMI plans, required documents, and images upload supported.  
+
+4. **Loan Applications**  
+   - Borrowers submit applications; Managers/Admin track pending/approved loans.  
+   - Filter applications by status: Pending, Approved, Rejected.  
+   - Approve, reject, and view loan details with timestamps.  
+
+5. **Authentication & Security**  
+   - Email/password login & registration with validation.  
+   - Role-based access control for private routes.  
+   - JWT or Firebase token-based authentication.  
+
+ 
+---
+
+## Tech Stack
+
+**Frontend:** React, Tailwind CSS, Framer Motion, Firebase Auth, Axios  
+**Backend:** Node.js, Express.js, MongoDB, JWT (optional), Stripe  
+**Deployment:** Vercel / Netlify  
+
+---
+
+
+
+ 
+
+ 
